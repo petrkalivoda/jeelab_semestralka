@@ -1,0 +1,40 @@
+do standalone.xml pøidat 
+dej to datasources
+<datasource jta="true" jndi-name="java:/JeelabDS" pool-name="JeelabDS" enabled="true" use-ccm="true">
+    <connection-url>jdbc:mysql://localhost:3306/HOST</connection-url>
+    <driver-class>com.mysql.jdbc.Driver</driver-class>
+    <driver>mysq</driver>
+    <security>
+        <user-name>NAME</user-name>
+        <password>HESLO</password>
+    </security>
+    <validation>
+        <valid-connection-checker class-name="org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLValidConnectionChecker"/>
+        <background-validation>true</background-validation>
+        <exception-sorter class-name="org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLExceptionSorter"/>
+    </validation>
+</datasource>
+
+a pod to do drivers
+<driver name="mysq" module="com.mysql">
+    <xa-datasource-class>com.mysql.jdbc.jdbc2.optional.MysqlXADataSource</xa-datasource-class>
+</driver>
+
+potom stahni mysql connector http://dev.mysql.com/downloads/connector/j/
+a jar nakopiruj do \modules\system\layers\base\com\mysql\main
+
+pak v ty slozce vytvor module.xml
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<module xmlns="urn:jboss:module:1.3" name="com.mysql">
+	<resources>
+		<resource-root path="mysql-connector-java-5.1.39-bin.jar"/>
+	</resources>
+	<dependencies>
+        <module name="javax.api"/>
+        <module name="javax.transaction.api"/>
+        <module name="javax.servlet.api" optional="true"/>
+    </dependencies>
+</module>
+
+no a pak doufej ze ti to pujde...

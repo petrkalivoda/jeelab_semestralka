@@ -7,9 +7,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "user")
-public class User {
+public class User implements JpaEntity {
+
+	private static final long serialVersionUID = 2907932664849397798L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,11 +21,21 @@ public class User {
 	public Long id;
 	
 	@Column(name = "firstname")
-	public String firstname;
+	private String firstname;
 	
 	@Column(name = "lastname")
-	public String lastname;
+	private String lastname;
 
+	@Column(name = "email", unique = true)
+	private String email;
+	
+	@JsonIgnore
+	@Column(name = "password")
+	private String password;
+	
+	@Column(name = "active")
+	private boolean active = true;
+	
 	public Long getId() {
 		return id;
 	}
@@ -44,6 +58,30 @@ public class User {
 
 	public void setLastname(String lastname) {
 		this.lastname = lastname;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 	
 }

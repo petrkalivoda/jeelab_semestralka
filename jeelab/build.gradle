@@ -21,10 +21,21 @@ dependencies {
     
     //ws
 	compile group: 'org.jboss.spec.javax.ws.rs', name: 'jboss-jaxrs-api_2.0_spec', version: '1.0.0.Final'
+
+	compile group: 'org.jboss.resteasy', name: 'resteasy-validator-provider-11', version: '3.0.16.Final'
 	
+	//jackson
+	compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.7.4'
+	
+	//javax validation
+	compile group: 'javax.validation', name: 'validation-api', version: '1.1.0.Final'
+
 	//Hibernate
 	compile group: 'org.hibernate.javax.persistence', name: 'hibernate-jpa-2.1-api', version: '1.0.0.Final'
-
+	
+	//mysql
+	//compile group: 'mysql', name: 'mysql-connector-java', version: '6.0.2'
+	
 }
 
 eclipse {
