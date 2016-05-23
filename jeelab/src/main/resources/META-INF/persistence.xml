@@ -8,6 +8,12 @@
    <persistence-unit name="jee">
 <!--       <jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source> -->
       <jta-data-source>java:/JeelabDS</jta-data-source>
+      <class>jeelab.model.entity.BusinessHours</class>
+      <class>jeelab.model.entity.FacilityType</class>
+      <class>jeelab.model.entity.Role</class>
+      <class>jeelab.model.entity.SportsCentre</class>
+      <class>jeelab.model.entity.SportsCentreFacility</class>
+      <class>jeelab.model.entity.User</class>
       <properties>
             <property name="hibernate.show_sql" value="true" />
 <!--             <property name="hibernate.hbm2ddl.auto" value="create" /> -->
