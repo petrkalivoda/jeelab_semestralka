@@ -18,7 +18,7 @@ public class User implements JpaEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
-	public Long id;
+	private Long id;
 	
 	@Column(name = "firstname")
 	private String firstname;
