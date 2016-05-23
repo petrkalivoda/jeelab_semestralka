@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import java.util.Set;
+import java.util.Collection;
 import javax.persistence.ManyToMany;
 
 @Entity
@@ -39,7 +39,7 @@ public class User implements JpaEntity {
     private boolean active = true;
 
     @ManyToMany(targetEntity = Role.class)
-    private Set roles;
+    private Collection<Role> roles;
 
     public Long getId() {
         return id;
@@ -89,11 +89,11 @@ public class User implements JpaEntity {
         this.active = active;
     }
 
-    public Set getRoles() {
+    public Collection<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set roles) {
+    public void setRoles(Collection<Role> roles) {
         this.roles = roles;
     }
 

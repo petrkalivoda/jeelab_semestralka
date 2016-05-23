@@ -1,18 +1,18 @@
 package jeelab.model.entity;
 
 import java.util.Collection;
-import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+
 @Entity
-@Table(name = "role_table") //role is sql reserved keyword
-public class Role implements JpaEntity {
+@Table(name = "facility_type")
+public class FacilityType implements JpaEntity {
 
     private static final long serialVersionUID = 2907932664849397798L;
 
@@ -20,12 +20,12 @@ public class Role implements JpaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-
+    
     @Column(name = "name")
     private String name;
     
-    @ManyToMany(targetEntity = User.class)
-    private Collection<User> users;
+    @OneToMany(mappedBy = "facilityType")
+    private Collection<SportsCentreFacility> facilities;
 
     public Long getId() {
         return id;
@@ -43,12 +43,11 @@ public class Role implements JpaEntity {
         this.name = name;
     }
 
-    public Collection<User> getUsers() {
-        return users;
+    public Collection<SportsCentreFacility> getFacilities() {
+        return facilities;
     }
 
-    public void setUsers(Collection<User> users) {
-        this.users = users;
+    public void setFacilities(Collection<SportsCentreFacility> facilities) {
+        this.facilities = facilities;
     }
-
 }
