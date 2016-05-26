@@ -1,5 +1,6 @@
 package jeelab.model.entity;
 
+import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -8,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -16,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @Entity
-@Table(name = "user")
+@Table(name = "user_table")
 @JsonInclude(Include.NON_NULL)
 public class User implements JpaEntity {
 
@@ -42,6 +44,10 @@ public class User implements JpaEntity {
 	
 	@Column(name = "active")
 	private boolean active = true;
+	
+
+    @ManyToMany(targetEntity = Role.class)
+    private Collection<Role> roles;
 	
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 	private List<Reservation> reservations;
@@ -93,6 +99,14 @@ public class User implements JpaEntity {
 	public void setActive(boolean active) {
 		this.active = active;
 	}
+	
+    public Collection<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Collection<Role> roles) {
+        this.roles = roles;
+    }
 
 	public List<Reservation> getReservations() {
 		return reservations;
@@ -101,6 +115,5 @@ public class User implements JpaEntity {
 	public void setReservations(List<Reservation> reservations) {
 		this.reservations = reservations;
 	}
-	
-}
 
+}

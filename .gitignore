@@ -47,3 +47,5 @@ proguard/
 .gradle/
 build/
 bin/
+/jeelab/nb-configuration.xml
+jeelab/nbactions.xml

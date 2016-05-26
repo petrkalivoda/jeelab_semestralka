@@ -1,0 +1,67 @@
+package jeelab.model.entity;
+
+import java.util.Collection;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+
+@Entity
+@Table(name = "sports_centre_facility")
+public class SportsCentreFacility implements JpaEntity {
+
+    private static final long serialVersionUID = 2907932664849397798L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+    
+    @ManyToOne
+    private SportsCentre sportsCentre;
+    
+    @ManyToMany(targetEntity = BusinessHours.class)
+    private Collection<BusinessHours> businessHours;
+    
+    @ManyToOne
+    private FacilityType facilityType;
+    
+    //TODO: add mapping for Reservation
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public SportsCentre getSportsCentre() {
+        return sportsCentre;
+    }
+
+    public void setSportsCentre(SportsCentre sportsCentre) {
+        this.sportsCentre = sportsCentre;
+    }
+
+    public Collection<BusinessHours> getBusinessHours() {
+        return businessHours;
+    }
+
+    public void setBusinessHours(Collection<BusinessHours> businessHours) {
+        this.businessHours = businessHours;
+    }
+
+    public FacilityType getFacilityType() {
+        return facilityType;
+    }
+
+    public void setFacilityType(FacilityType facilityType) {
+        this.facilityType = facilityType;
+    }
+}
