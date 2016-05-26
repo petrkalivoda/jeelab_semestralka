@@ -49,6 +49,14 @@ public class UserBuilder implements EntityBuilder<User> {
 		return build(entity);
 	}
 
+	@Override
+	public void clear() {
+		firstname = null;
+		lastname = null;
+		email = null;
+		hash = null;
+	}
+
 	
 	
 }

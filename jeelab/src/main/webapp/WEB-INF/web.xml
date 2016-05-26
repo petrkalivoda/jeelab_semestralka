@@ -3,9 +3,9 @@
 	http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	version="2.5">
 
-<!-- 	<login-config> -->
-<!-- 		<auth-method>BASIC</auth-method> -->
-<!-- 		<realm-name>RestSecurityBasic</realm-name> -->
-<!-- 	</login-config> -->
+	<login-config>
+		<auth-method>BASIC</auth-method>
+		<realm-name>RestSecurityBasic</realm-name>
+	</login-config>
 
 </web-app>

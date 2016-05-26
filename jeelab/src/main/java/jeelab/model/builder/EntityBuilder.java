@@ -4,5 +4,6 @@ public interface EntityBuilder<E> {
 
 	public E build(E entity);
 	public E build();
+	public void clear();
 	
 }
