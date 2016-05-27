@@ -3,9 +3,31 @@
 	http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	version="2.5">
 
+	<context-param>
+		<param-name>resteasy.role.based.security</param-name>
+		<param-value>true</param-value>
+	</context-param>
+
+<!-- 	<security-constraint> -->
+<!-- 		<web-resource-collection> -->
+<!-- 			<web-resource-name>Resteasy</web-resource-name> -->
+<!-- 			<url-pattern>/rest/user/test2</url-pattern> -->
+<!-- 		</web-resource-collection> -->
+<!-- 		<auth-constraint> -->
+<!-- 			<role-name>ROLE_ADMIN</role-name> -->
+<!-- 			<role-name>ROLE_USER</role-name> -->
+<!-- 		</auth-constraint> -->
+<!-- 	</security-constraint> -->
+
 	<login-config>
 		<auth-method>BASIC</auth-method>
-		<realm-name>RestSecurityBasic</realm-name>
+		<realm-name>Rest</realm-name>
 	</login-config>
 
+<!-- 	<security-role> -->
+<!-- 		<role-name>ROLE_ADMIN</role-name> -->
+<!-- 	</security-role> -->
+<!-- 	<security-role> -->
+<!-- 		<role-name>ROLE_USER</role-name> -->
+<!-- 	</security-role> -->
 </web-app>

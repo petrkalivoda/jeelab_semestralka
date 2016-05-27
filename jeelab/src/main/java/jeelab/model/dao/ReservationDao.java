@@ -23,7 +23,7 @@ public class ReservationDao {
 	@PersistenceContext(unitName = "jee")
     private EntityManager manager;
 	
-	@RolesAllowed("gooduser")
+	//@RolesAllowed("gooduser")
 	public void save(Reservation reservation) {
     	manager.persist(reservation);
     	manager.flush();

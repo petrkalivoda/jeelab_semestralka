@@ -41,6 +41,10 @@ public class Reservation implements JpaEntity {
 	@JoinColumn(name = "user_id")
 	private User user;
 	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "sports_centre_facility_id")
+	private SportsCentreFacility sportsCentreFacility;
+	
 	@Override
 	public Long getId() {
 		return id;
@@ -81,6 +85,14 @@ public class Reservation implements JpaEntity {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public SportsCentreFacility getSportsCentreFacility() {
+		return sportsCentreFacility;
+	}
+
+	public void setSportsCentreFacility(SportsCentreFacility sportsCentreFacility) {
+		this.sportsCentreFacility = sportsCentreFacility;
 	}
 		
 }

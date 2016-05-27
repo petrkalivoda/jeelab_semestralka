@@ -1,0 +1,13 @@
+<security-domain name="jeedb" cache-type="default">
+	<authentication>
+		<login-module code="Database" flag="required">
+			<module-option name="dsJndiName" value="java:/JeelabDS" />
+			<module-option name="principalsQuery"
+				value="SELECT password AS 'Password' FROM user_table WHERE email = ? AND active = 1" />
+			<module-option name="rolesQuery"
+				value="SELECT name, 'Roles' FROM user_table_role_table JOIN role_table ON (role_table.id = user_table_role_table.roles_id) JOIN user_table ON (user_table.id = user_table_role_table.User_id) WHERE email = ?" />
+			<module-option name="hashAlgorithm" value="SHA-256" />
+			<module-option name="hashEncoding" value="hex" />
+		</login-module>
+	</authentication>
+</security-domain>

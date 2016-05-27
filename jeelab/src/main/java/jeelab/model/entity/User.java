@@ -45,9 +45,8 @@ public class User implements JpaEntity {
 	@Column(name = "active")
 	private boolean active = true;
 	
-
-    @ManyToMany(targetEntity = Role.class)
-    private Collection<Role> roles;
+    //@ManyToMany(targetEntity = Role.class)
+//    private Collection<Role> roles;
 	
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 	private List<Reservation> reservations;
@@ -100,13 +99,13 @@ public class User implements JpaEntity {
 		this.active = active;
 	}
 	
-    public Collection<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Collection<Role> roles) {
-        this.roles = roles;
-    }
+//    public Collection<Role> getRoles() {
+//        return roles;
+//    }
+//
+//    public void setRoles(Collection<Role> roles) {
+//        this.roles = roles;
+//    }
 
 	public List<Reservation> getReservations() {
 		return reservations;

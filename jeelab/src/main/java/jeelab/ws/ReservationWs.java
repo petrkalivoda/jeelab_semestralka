@@ -35,7 +35,6 @@ public class ReservationWs {
 	 * @return
 	 */
 	@POST()
-	@Path("/add")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response newReservation(@Valid ReservationForm form) {
 		Reservation reservation = reservationBuilder
@@ -46,8 +45,7 @@ public class ReservationWs {
 				.build();
 		// TODO existuje uzivatel? je aktivni? je termin volny?
 		reservationDao.save(reservation);
-		reservation.setUser(null);
-		return Response.status(Status.CREATED).entity(reservation).build();
+		return Response.status(Status.CREATED).build();
 	}
 	
 }

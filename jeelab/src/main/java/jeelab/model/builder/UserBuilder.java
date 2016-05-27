@@ -1,5 +1,7 @@
 package jeelab.model.builder;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
 import jeelab.model.entity.User;
 
 public class UserBuilder implements EntityBuilder<User> {
@@ -25,8 +27,7 @@ public class UserBuilder implements EntityBuilder<User> {
 	}
 	
 	public UserBuilder password(String password) {
-		// TODO generate hash
-		this.hash = password;
+		this.hash = DigestUtils.sha256Hex(password);
 		return this;
 	}
 

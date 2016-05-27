@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 
@@ -31,7 +32,8 @@ public class SportsCentreFacility implements JpaEntity {
     @ManyToOne
     private FacilityType facilityType;
     
-    //TODO: add mapping for Reservation
+    @OneToMany(targetEntity = Reservation.class)
+    private Collection<Reservation> reservations;
 
     public Long getId() {
         return id;
@@ -64,4 +66,12 @@ public class SportsCentreFacility implements JpaEntity {
     public void setFacilityType(FacilityType facilityType) {
         this.facilityType = facilityType;
     }
+
+	public Collection<Reservation> getReservations() {
+		return reservations;
+	}
+
+	public void setReservations(Collection<Reservation> reservations) {
+		this.reservations = reservations;
+	}
 }

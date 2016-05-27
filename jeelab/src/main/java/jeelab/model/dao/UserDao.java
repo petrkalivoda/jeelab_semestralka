@@ -2,7 +2,6 @@ package jeelab.model.dao;
 
 import java.util.List;
 
-import javax.annotation.security.DenyAll;
 import javax.ejb.Stateless;
 import javax.enterprise.inject.Produces;
 import javax.persistence.EntityManager;
@@ -32,7 +31,6 @@ public class UserDao {
                 .getResultList();
     }
     
-    @DenyAll
     public void save(User user) {
     	manager.persist(user);
     	manager.flush();
