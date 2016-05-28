@@ -1,0 +1,46 @@
+#content {
+	margin: 0 6em;
+	position: relative;
+}
+
+label {
+	display: block !important;
+}
+
+.form-container {
+	position: absolute;
+	width: 500px;
+	left: 50%;
+	transform: translate(-50%, 0); 
+}
+
+.form-container h3 {
+	padding-bottom: 5px;
+	margin-bottom: 20px;
+	border-bottom: 1px solid #ccc;
+}
+
+form .error span {
+	color: #A94442;
+}
+
+form .error input[type=text], form .error input[type=password], form .error select, form .error textarea, form .error .input-group-btn button {
+	border: 1px solid #A94442;
+}
+
+form .error input[type=text]:focus, form .error input[type=password]:focus, form .error select:focus, form .error textarea:focus {
+	box-shadow: 0 1px 1px rgba(169, 68, 66, 0.075) inset, 0 0 8px rgba(169, 68, 66, 0.6);
+}
+
+form .error-container {
+	color: #A94442;
+	font-weight: bold;
+}
+
+form .error-container ul {
+	padding-left: 0;
+}
+
+form .error-container li {
+	list-style-type: none;
+}

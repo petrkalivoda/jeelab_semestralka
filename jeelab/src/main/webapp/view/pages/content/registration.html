@@ -1,0 +1,38 @@
+<meta charset="UTF-8">
+
+<div class="form-container" data-ng-controller="RegistrationController">
+	
+	<h3>Registrace</h3>
+	
+	<form id="registration-form">
+	
+		<label class="form-group">
+			Jméno
+			<input class="form-control" type="text" name="firstname" data-ng-model="registration.form.firstname">
+		</label>
+		
+		<label class="form-group">
+			Přijmení
+			<input class="form-control" type="text" name="lastname" data-ng-model="registration.form.lastname">
+		</label>
+		
+		<label class="form-group">
+			E-mail
+			<input class="form-control" type="text" name="email" data-ng-model="registration.form.email">
+		</label>
+		
+		<label class="form-group">
+			Heslo
+			<input class="form-control" type="password" name="password" data-ng-model="registration.form.password">
+		</label>
+		
+		<label class="form-group">
+			Heslo (kontrola)
+			<input class="form-control" type="password" name="password-check" data-ng-model="registration.preset.password_check">
+		</label>
+		
+		<div>
+			<button class="btn btn-lg btn-primary" data-ng-click="registration.submit()">Zaregistrovat se</button>
+		</div>
+	</form>
+</div>

@@ -57,7 +57,7 @@ public class FacilityResponse {
 		for (BusinessHours h : hours) {
 			this.hours.add(new HoursResponse()
 					.id(h.getId())
-					.url(address.hours(id, h.getId()))
+					.url(address.facilityHours(id, h.getId()))
 					.day(h.getDay())
 					.open(h.getOpenTime())
 					.close(h.getCloseTime())
