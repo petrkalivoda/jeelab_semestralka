@@ -1,7 +1,11 @@
 package jeelab.ws.response;
 
-public class UserResponse {
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+@JsonInclude(Include.NON_NULL)
+public class UserResponse {
+	
 	private Long id;
 	private String url;
 	private String firstname;
@@ -10,8 +14,11 @@ public class UserResponse {
 	
 	public UserResponse id(long id) {
 		this.id = id;
-		this.url = "url";
-		//TODO url
+		return this;
+	}
+	
+	public UserResponse url(String url) {
+		this.url = url;
 		return this;
 	}
 	

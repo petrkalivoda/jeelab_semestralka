@@ -28,7 +28,7 @@ public class BusinessHours implements JpaEntity {
     private float openTime;
     
     @Column(name = "close_time")
-    private float close_time;
+    private float closeTime;
     
     @ManyToMany(targetEntity = SportsCentre.class)
     private Collection<SportsCentre> sportsCentres;
@@ -60,12 +60,12 @@ public class BusinessHours implements JpaEntity {
         this.openTime = openTime;
     }
 
-    public float getClose_time() {
-        return close_time;
+    public float getCloseTime() {
+        return closeTime;
     }
 
-    public void setClose_time(float close_time) {
-        this.close_time = close_time;
+    public void setCloseTime(float closeTime) {
+        this.closeTime = closeTime;
     }
 
     public Collection<SportsCentre> getSportsCentres() {

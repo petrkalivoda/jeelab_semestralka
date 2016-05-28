@@ -14,12 +14,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @Entity
 @Table(name = "user_table")
-@JsonInclude(Include.NON_NULL)
 public class User implements JpaEntity {
 
 	private static final long serialVersionUID = 2907932664849397798L;
@@ -45,8 +42,8 @@ public class User implements JpaEntity {
 	@Column(name = "active")
 	private boolean active = true;
 	
-    //@ManyToMany(targetEntity = Role.class)
-//    private Collection<Role> roles;
+    @ManyToMany(targetEntity = Role.class)
+    private Collection<Role> roles;
 	
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 	private List<Reservation> reservations;
@@ -99,13 +96,13 @@ public class User implements JpaEntity {
 		this.active = active;
 	}
 	
-//    public Collection<Role> getRoles() {
-//        return roles;
-//    }
-//
-//    public void setRoles(Collection<Role> roles) {
-//        this.roles = roles;
-//    }
+    public Collection<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Collection<Role> roles) {
+        this.roles = roles;
+    }
 
 	public List<Reservation> getReservations() {
 		return reservations;

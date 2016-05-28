@@ -1,6 +1,8 @@
 package jeelab.model.entity;
 
 import java.util.Collection;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -40,7 +42,7 @@ public class SportsCentre implements JpaEntity {
     @OneToMany(mappedBy = "sportsCentre")
     private Collection<SportsCentreFacility> facilities;
     
-    @ManyToMany(targetEntity = BusinessHours.class)
+    @ManyToMany(targetEntity = BusinessHours.class, cascade = CascadeType.PERSIST)
     private Collection<BusinessHours> businessHours;
 
     public Long getId() {

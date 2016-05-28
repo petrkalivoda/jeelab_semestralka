@@ -2,8 +2,6 @@ package jeelab.ws;
 
 import java.util.List;
 
-import javax.annotation.security.PermitAll;
-import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
@@ -16,14 +14,13 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import org.jboss.security.annotation.SecurityDomain;
-
 import jeelab.model.builder.UserBuilder;
 import jeelab.model.dao.ReservationDao;
 import jeelab.model.dao.UserDao;
 import jeelab.model.entity.Reservation;
 import jeelab.model.entity.User;
 import jeelab.view.RegistrationForm;
+import jeelab.ws.response.AddressStorage;
 import jeelab.ws.response.ListWrapper;
 import jeelab.ws.response.UserResponse;
 
@@ -34,7 +31,6 @@ import jeelab.ws.response.UserResponse;
  */
 @Path("/user")
 @Produces(MediaType.APPLICATION_JSON)
-@SecurityDomain("jeedb")
 public class UserWS {
 	
 	@Inject
@@ -43,9 +39,11 @@ public class UserWS {
 	private ReservationDao reservationDao;
 	@Inject
 	private UserBuilder userBuilder;
+	@Inject
+	private AddressStorage address;
 	
 	/**
-	 * Registruje noveho uzivatele
+	 * Registruje noveho uzivatele s roli "ROLE_USER"
 	 * @param form
 	 * @return
 	 */
@@ -58,10 +56,12 @@ public class UserWS {
 				.lastname(form.getLastname())
 				.email(form.getEmail())
 				.password(form.getPassword())
+				.setRole(UserBuilder.ROLE_USER)
 				.build();
 		userDao.save(user);
 		UserResponse response = new UserResponse()
 				.id(user.getId())
+				.url(address.user(user.getId()))
 				.firstname(user.getFirstname())
 				.lastname(user.getLastname())
 				.email(user.getEmail());
@@ -78,22 +78,6 @@ public class UserWS {
 	public Response getReservations(@PathParam("userId") Long userId) {
 		List<Reservation> reservations = reservationDao.getUserReservations(userId);
 		return Response.ok(new ListWrapper(reservations)).build();
-	}
-	
-	@GET()
-	@Path("/test1")
-	@Produces(MediaType.TEXT_PLAIN)
-	@PermitAll
-	public Response test1() {
-		return Response.ok("test 1").build();
-	}
-	
-	@GET()
-	@Path("/test2")
-	@Produces(MediaType.TEXT_PLAIN)
-	@RolesAllowed("ROLE_USER")
-	public Response test2() {
-		return Response.ok("test 2").build();
 	}
 	
 }

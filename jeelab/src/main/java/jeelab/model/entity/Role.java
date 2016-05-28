@@ -21,7 +21,7 @@ public class Role implements JpaEntity {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "name", unique = true)
     private String name;
     
     @ManyToMany(targetEntity = User.class)

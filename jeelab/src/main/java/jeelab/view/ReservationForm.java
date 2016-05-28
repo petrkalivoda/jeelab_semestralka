@@ -9,6 +9,9 @@ public class ReservationForm {
 	@NotNull(message = "validation.reservation.user.null")
 	private Long user;
 	
+	@NotNull(message = "validation.reservation.centreFacility.null")
+	private Long centreFacility;
+	
 	@NotNull(message = "validation.reservation.date.null")
 	private Date date;
 	
@@ -24,6 +27,14 @@ public class ReservationForm {
 
 	public void setUser(Long user) {
 		this.user = user;
+	}
+
+	public Long getCentreFacility() {
+		return centreFacility;
+	}
+
+	public void setCentreFacility(Long centreFacility) {
+		this.centreFacility = centreFacility;
 	}
 
 	public Date getDate() {

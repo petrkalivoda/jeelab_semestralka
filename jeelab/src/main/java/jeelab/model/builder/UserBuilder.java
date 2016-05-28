@@ -1,15 +1,28 @@
 package jeelab.model.builder;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
+import javax.inject.Inject;
+
 import org.apache.commons.codec.digest.DigestUtils;
 
+import jeelab.model.dao.UserDao;
+import jeelab.model.entity.Role;
 import jeelab.model.entity.User;
 
 public class UserBuilder implements EntityBuilder<User> {
+	
+	public static final String ROLE_USER = "ROLE_USER";
+	
+	@Inject
+	private UserDao userDao;
 	
 	public String firstname;
 	public String lastname;
 	public String email;
 	public String hash;
+	public Collection<Role> roles;
 	
 	public UserBuilder firstname(String firstname) {
 		this.firstname = firstname;
@@ -30,6 +43,16 @@ public class UserBuilder implements EntityBuilder<User> {
 		this.hash = DigestUtils.sha256Hex(password);
 		return this;
 	}
+	
+	public UserBuilder setRole(String roleName) {
+		Role role = userDao.getRoleByName(roleName);
+		if (role == null)
+			return this;
+		if (this.roles == null)
+			this.roles = new ArrayList<Role>();
+		this.roles.add(role);
+		return this;
+	}
 
 	@Override
 	public User build(User entity) {
@@ -41,6 +64,8 @@ public class UserBuilder implements EntityBuilder<User> {
 			entity.setEmail(email);
 		if (hash != null)
 			entity.setPassword(hash);
+		if (roles != null)
+			entity.setRoles(roles);
 		return entity;
 	}
 

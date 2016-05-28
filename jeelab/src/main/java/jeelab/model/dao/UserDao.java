@@ -7,6 +7,7 @@ import javax.enterprise.inject.Produces;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import jeelab.model.entity.Role;
 import jeelab.model.entity.User;
 
 /**
@@ -42,7 +43,22 @@ public class UserDao {
      * @return
      */
     public User getbyEmail(String email) {
-    	return manager.createQuery("select user from User user where user.email = ?", User.class).setParameter(1, email).getSingleResult();
+    	return manager
+    			.createQuery("select user from User user where user.email = ?", User.class)
+    			.setParameter(1, email)
+    			.getSingleResult();
+    }
+    
+    /**
+     * Vraci entitu Role podle jejiho jmena
+     * @param role
+     * @return
+     */
+    public Role getRoleByName(String role) {
+    	return manager
+    			.createQuery("select role from Role role where role.name = ?", Role.class)
+    			.setParameter(1, role)
+    			.getSingleResult();
     }
     
     public User get(long id) {

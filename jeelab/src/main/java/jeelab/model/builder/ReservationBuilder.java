@@ -4,19 +4,24 @@ import java.sql.Date;
 
 import javax.inject.Inject;
 
+import jeelab.model.dao.SportsCentreDao;
 import jeelab.model.dao.UserDao;
 import jeelab.model.entity.Reservation;
+import jeelab.model.entity.SportsCentreFacility;
 import jeelab.model.entity.User;
 
 public class ReservationBuilder implements EntityBuilder<Reservation> {
 	
 	@Inject
-	private UserDao userDao; 
+	private UserDao userDao;
+	@Inject
+	private SportsCentreDao sportCentreDao;
 	
 	private Date date;
 	private Float from;
 	private Float to;
 	private User user;
+	private SportsCentreFacility sportsCentreFacility;
 	
 	public ReservationBuilder date(java.util.Date date) {
 		if (date != null)
@@ -39,6 +44,11 @@ public class ReservationBuilder implements EntityBuilder<Reservation> {
 		return this;
 	}
 	
+	public ReservationBuilder sportsCentreFacility(long id) {
+		this.sportsCentreFacility = this.sportCentreDao.getFacility(id);
+		return this;
+	}
+	
 	@Override
 	public Reservation build(Reservation entity) {
 		if (date != null)
@@ -49,6 +59,8 @@ public class ReservationBuilder implements EntityBuilder<Reservation> {
 			entity.setTo(to);
 		if (user != null)
 			entity.setUser(user);
+		if (sportsCentreFacility != null)
+			entity.setSportsCentreFacility(sportsCentreFacility);
 		return entity;
 	}
 
@@ -64,6 +76,7 @@ public class ReservationBuilder implements EntityBuilder<Reservation> {
 		from = null;
 		to = null;
 		user = null;
+		sportsCentreFacility = null;
 	}
 
 }
