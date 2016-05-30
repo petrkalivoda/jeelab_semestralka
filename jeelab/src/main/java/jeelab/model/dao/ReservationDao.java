@@ -10,7 +10,7 @@ import javax.persistence.TemporalType;
 
 import org.joda.time.DateTime;
 
-import exception.ReservationUnavailableException;
+import jeelab.exception.ReservationUnavailableException;
 import jeelab.model.builder.ReservationBuilder;
 import jeelab.model.entity.BusinessHours;
 import jeelab.model.entity.Reservation;
@@ -58,7 +58,7 @@ public class ReservationDao {
 		return hours.getOpenTime() <= reservation.getFrom() && hours.getCloseTime() >= reservation.getTo();
 	}
 	
-	public void save(Reservation reservation) throws Exception {
+	public void save(Reservation reservation) throws ReservationUnavailableException {
 		if(!isAvailable(reservation) || isOutOfHours(reservation)){
 			throw new ReservationUnavailableException();
 		}

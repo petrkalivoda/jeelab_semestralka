@@ -6,7 +6,6 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import exception.BusinessHoursExistsException;
 import jeelab.model.entity.BusinessHours;
 import jeelab.view.HoursForm;
 

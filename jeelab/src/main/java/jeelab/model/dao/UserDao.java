@@ -8,7 +8,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import exception.UserUnavailableException;
+import jeelab.exception.UserUnavailableException;
 import jeelab.model.builder.UserBuilder;
 import jeelab.model.entity.User;
 import jeelab.view.UserForm;

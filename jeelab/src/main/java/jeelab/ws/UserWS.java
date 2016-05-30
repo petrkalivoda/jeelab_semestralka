@@ -14,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import jeelab.exception.UserUnavailableException;
 import jeelab.model.builder.UserBuilder;
 import jeelab.model.dao.ReservationDao;
 import jeelab.model.dao.UserDao;
@@ -51,7 +52,7 @@ public class UserWS {
 	@POST()
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addUser(@Valid RegistrationForm form) {
+	public Response addUser(@Valid RegistrationForm form) throws UserUnavailableException {
 		User user = userBuilder
 				.firstname(form.getFirstname())
 				.lastname(form.getLastname())

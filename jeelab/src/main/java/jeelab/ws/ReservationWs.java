@@ -11,6 +11,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import jeelab.exception.ReservationUnavailableException;
 import jeelab.model.builder.ReservationBuilder;
 import jeelab.model.dao.ReservationDao;
 import jeelab.model.entity.Reservation;
@@ -42,7 +43,7 @@ public class ReservationWs {
 	@POST()
 	@Consumes(MediaType.APPLICATION_JSON)
 	@RolesAllowed("ROLE_USER")
-	public Response newReservation(@Valid ReservationForm form) {
+	public Response newReservation(@Valid ReservationForm form) throws ReservationUnavailableException {
 		Reservation reservation = reservationBuilder
 				.date(form.getDate())
 				.from(form.getFrom())
