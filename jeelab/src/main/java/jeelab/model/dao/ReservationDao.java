@@ -34,6 +34,7 @@ public class ReservationDao {
     private EntityManager manager;
 	
 	private boolean isAvailable(Reservation reservation){
+		// !!! FIXME !!! getSingleResult hází výjimku při nenalezení.
 		return ((Long) manager.createQuery("select count(reservation) from Reservation reservation "
 							+ "where reservation.sportsCentreFacility=:res "
 							+ "and reservation.date=:date "

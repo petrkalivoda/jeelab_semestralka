@@ -68,6 +68,7 @@ public class UserDao {
      * @return
      */
     public User getbyEmail(String email) {
+    	// !!! FIXME !!! getSingleResult hází výjimku při nenalezení.
     	return manager
     			.createQuery("select user from User user where user.email = ?", User.class)
     			.setParameter(1, email)

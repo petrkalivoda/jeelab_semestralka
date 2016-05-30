@@ -72,6 +72,7 @@ public class BusinessHoursDao {
      * @return
      */
     public Long getBusinessHoursCount(){
+    	// !!! FIXME !!! getSingleResult hází výjimku při nenalezení.
     	return (Long) manager.createQuery("select count(bh) from BusinessHours bh").getSingleResult();
     }
 	
@@ -100,6 +101,7 @@ public class BusinessHoursDao {
      * @return
      */
     public Long getCentreBusinessHoursCount(Long centreId){
+    	// !!! FIXME !!! getSingleResult hází výjimku při nenalezení.
     	return (Long) manager.createQuery("select count(bh) from BusinessHours bh join bh.sportsCentres sc where sc.id=:centreId")
     			.setParameter("centreId", centreId)
     			.getSingleResult();
@@ -130,12 +132,14 @@ public class BusinessHoursDao {
      * @return
      */
     public Long getFacilityBusinessHoursCount(Long facilityId){
+    	// !!! FIXME !!! getSingleResult hází výjimku při nenalezení.
     	return (Long) manager.createQuery("select count(bh) from BusinessHours bh join bh.sportsCentreFacilities scf where scf.id=:facilityId")
     			.setParameter("facilityId", facilityId)
     			.getSingleResult();
     }
 
 	public BusinessHours getFacilityHoursForDay(Long facilityId, int dayOfWeek) {
+		// !!! FIXME !!! getSingleResult hází výjimku při nenalezení.
 		return manager.createQuery("select bh from BusinessHours bh join bh.sportsCentreFacilities scf where scf.id=:facilityId "
 								+ "and bh.day=:day", 
 								BusinessHours.class)
