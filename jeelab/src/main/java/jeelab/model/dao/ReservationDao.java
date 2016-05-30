@@ -34,11 +34,11 @@ public class ReservationDao {
     private EntityManager manager;
 	
 	private boolean isAvailable(Reservation reservation){
-		return ((Long) manager.createQuery("select count(reservation) from Reservation reservation"
-							+ "where reservation.sportsCentreFacility=:res"
-							+ "and reservation.date=:date"
-							+ "and reservation.startTime<:resStart"
-							+ "and reservation.end>:resEnd")	//interval check x1 < y2 && y1 < x2
+		return ((Long) manager.createQuery("select count(reservation) from Reservation reservation "
+							+ "where reservation.sportsCentreFacility=:res "
+							+ "and reservation.date=:date "
+							+ "and reservation.startTime<:resStart " //interval check x1 < y2 && y1 < x2
+							+ "and reservation.end>:resEnd")
 		.setParameter("res", reservation)
 		.setParameter("date", reservation.getDate(), TemporalType.DATE)
 		.setParameter("resStart", reservation.getFrom())
@@ -108,7 +108,7 @@ public class ReservationDao {
     public List<Reservation> getReservations(Long max, Long offset) {
         return manager
                 .createQuery("select reservation from Reservation reservation "
-                			+ "order by reservation.date"
+                			+ "order by reservation.date "
                 			+ (max > 0 ? "limit :offset,:max" : ""), 
                 			Reservation.class)
                 .setParameter("offset", offset)
@@ -131,8 +131,8 @@ public class ReservationDao {
 	 */
     public List<Reservation> getUserReservations(Long userId, Long max, Long offset) {
         return manager
-                .createQuery("select reservation from Reservation reservation where reservation.user.id = :userId"
-                			+ "order by reservation.date"
+                .createQuery("select reservation from Reservation reservation where reservation.user.id = :userId "
+                			+ "order by reservation.date "
                 			+ (max > 0 ? "limit :offset,:max" : ""), 
                 			Reservation.class)
                 .setParameter("userId", userId)

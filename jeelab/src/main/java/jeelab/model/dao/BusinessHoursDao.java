@@ -6,6 +6,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import exception.BusinessHoursExistsException;
 import jeelab.model.entity.BusinessHours;
 import jeelab.view.HoursForm;
 
@@ -20,7 +21,7 @@ public class BusinessHoursDao {
 	@PersistenceContext(unitName = "jee")
     private EntityManager manager;
 	
-	public void save(BusinessHours businessHours) {
+	public void save(BusinessHours businessHours){
     	manager.persist(businessHours);
     	manager.flush();
     }
@@ -59,7 +60,7 @@ public class BusinessHoursDao {
     public List<BusinessHours> getBusinessHours(Long max, Long offset) {
         return manager
                 .createQuery("select bh from BusinessHours bh "
-                			+ "order by bh.date"
+                			+ "order by bh.date "
                 			+ (max > 0 ? "limit :offset,:max" : ""),
                 			BusinessHours.class)
                 .setParameter("offset", offset)
@@ -84,8 +85,8 @@ public class BusinessHoursDao {
 	 */
     public List<BusinessHours> getCentreBusinessHours(Long centreId, Long max, Long offset) {
         return manager
-                .createQuery("select bh from BusinessHours bh join bh.sportsCentres sc where sc.id=:centreId"
-                			+ "order by bh.date"
+                .createQuery("select bh from BusinessHours bh join bh.sportsCentres sc where sc.id=:centreId "
+                			+ "order by bh.date "
                 			+ (max > 0 ? "limit :offset,:max" : ""),
                 			BusinessHours.class)
                 .setParameter("centreId", centreId)
@@ -114,8 +115,8 @@ public class BusinessHoursDao {
 	 */
     public List<BusinessHours> getFacilityBusinessHours(Long facilityId, Long max, Long offset) {
         return manager
-                .createQuery("select bh from BusinessHours bh join bh.sportsCentreFacilities scf where scf.id=:facilityId"
-                			+ "order by bh.date"
+                .createQuery("select bh from BusinessHours bh join bh.sportsCentreFacilities scf where scf.id=:facilityId "
+                			+ "order by bh.date "
                 			+ (max > 0 ? "limit :offset,:max" : ""), 
                 			BusinessHours.class)
                 .setParameter("facilityId", facilityId)
@@ -136,7 +137,7 @@ public class BusinessHoursDao {
     }
 
 	public BusinessHours getFacilityHoursForDay(Long facilityId, int dayOfWeek) {
-		return manager.createQuery("select bh from BusinessHours bh join bh.sportsCentreFacilities scf where scf.id=:facilityId"
+		return manager.createQuery("select bh from BusinessHours bh join bh.sportsCentreFacilities scf where scf.id=:facilityId "
 								+ "and bh.day=:day", 
 								BusinessHours.class)
 				.setParameter("facilityId", facilityId)
