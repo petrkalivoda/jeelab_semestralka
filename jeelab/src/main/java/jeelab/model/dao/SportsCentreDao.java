@@ -64,6 +64,13 @@ public class SportsCentreDao {
 	public List<SportsCentre> getAllCentre() {
 		return manager.createQuery("select centre from SportsCentre centre", SportsCentre.class).getResultList();
 	}
+	
+	public List<SportsCentreFacility> getCentreFacilites(long centreId){
+		return manager.createQuery("select scf from SportsCentreFacility scf where scf.sportsCentre=:centreId", 
+									SportsCentreFacility.class)
+				.setParameter("centreId", centreId)
+				.getResultList();
+	}
 
 	public SportsCentreFacility getFacility(long id) {
     	return manager.find(SportsCentreFacility.class, id);
