@@ -4,11 +4,14 @@ import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.enterprise.inject.Produces;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import jeelab.model.builder.UserBuilder;
 import jeelab.model.entity.Role;
 import jeelab.model.entity.User;
+import jeelab.view.UserForm;
 
 /**
  * Logika spojena s uzivatelem
@@ -17,6 +20,9 @@ import jeelab.model.entity.User;
  */
 @Stateless
 public class UserDao {
+	
+	@Inject
+	private UserBuilder userBuilder;
 
     @PersistenceContext(unitName = "jee")
     private EntityManager manager;
@@ -36,6 +42,17 @@ public class UserDao {
     	manager.persist(user);
     	manager.flush();
     }
+    
+    public void updateUser(long id, UserForm form) {
+		User user = manager.find(User.class, id);
+		if(user != null){
+			userBuilder
+				.firstname(form.getFirstName())
+				.lastname(form.getLastName())
+				.email(form.getLastName())
+				.password(form.getPassword());
+		}
+	}
     
     /**
      * Vraci uzivatele podle emailu
