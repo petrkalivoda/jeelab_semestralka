@@ -6,10 +6,14 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TemporalType;
 
+import org.joda.time.DateTime;
+
+import exception.ReservationUnavailableException;
 import jeelab.model.builder.ReservationBuilder;
+import jeelab.model.entity.BusinessHours;
 import jeelab.model.entity.Reservation;
-import jeelab.model.entity.SportsCentre;
 import jeelab.view.ReservationForm;
 
 /**
@@ -23,17 +27,53 @@ public class ReservationDao {
 	@Inject
 	private ReservationBuilder reservationBuilder;
 	
+	@Inject
+	private BusinessHoursDao businessHoursDao;
+	
 	@PersistenceContext(unitName = "jee")
     private EntityManager manager;
 	
-	public void save(Reservation reservation) {
-    	manager.persist(reservation);
+	private boolean isAvailable(Reservation reservation){
+		return ((Long) manager.createQuery("select count(reservation) from Reservation reservation"
+							+ "where reservation.sportsCentreFacility=:res"
+							+ "and reservation.date=:date"
+							+ "and reservation.startTime<:resStart"
+							+ "and reservation.end>:resEnd")	//interval check x1 < y2 && y1 < x2
+		.setParameter("res", reservation)
+		.setParameter("date", reservation.getDate(), TemporalType.DATE)
+		.setParameter("resStart", reservation.getFrom())
+		.setParameter("resEnd", reservation.getTo())
+		.getSingleResult()
+		) == 0;
+	}
+	
+	private boolean isOutOfHours(Reservation reservation){
+		DateTime dt = new DateTime(reservation.getDate().getTime());
+		BusinessHours hours = businessHoursDao.getFacilityHoursForDay(reservation.getSportsCentreFacility().getId(), dt.getDayOfWeek());
+		
+		if(hours == null){
+			return false;
+		}
+		
+		return hours.getOpenTime() <= reservation.getFrom() && hours.getCloseTime() >= reservation.getTo();
+	}
+	
+	public void save(Reservation reservation) throws Exception {
+		if(!isAvailable(reservation) || isOutOfHours(reservation)){
+			throw new ReservationUnavailableException();
+		}
+		
+		manager.persist(reservation);
     	manager.flush();
     }
 	
-	public void updateReservation(long id, ReservationForm form) {
+	public void updateReservation(long id, ReservationForm form) throws ReservationUnavailableException {
 		Reservation reservation = manager.find(Reservation.class, id);
 		if(reservation != null){
+			if(!isAvailable(reservation) || isOutOfHours(reservation)){
+				throw new ReservationUnavailableException();
+			}
+			
 			reservationBuilder
 				.date(form.getDate())
 				.from(form.getFrom())
@@ -69,7 +109,7 @@ public class ReservationDao {
         return manager
                 .createQuery("select reservation from Reservation reservation "
                 			+ "order by reservation.date"
-                			+ "limit :offset,:max",
+                			+ (max > 0 ? "limit :offset,:max" : ""), 
                 			Reservation.class)
                 .setParameter("offset", offset)
                 .setParameter("max", max)
@@ -93,7 +133,7 @@ public class ReservationDao {
         return manager
                 .createQuery("select reservation from Reservation reservation where reservation.user.id = :userId"
                 			+ "order by reservation.date"
-                			+ "limit :offset,:max", 
+                			+ (max > 0 ? "limit :offset,:max" : ""), 
                 			Reservation.class)
                 .setParameter("userId", userId)
                 .setParameter("offset", offset)

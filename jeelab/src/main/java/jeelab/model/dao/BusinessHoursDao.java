@@ -60,7 +60,7 @@ public class BusinessHoursDao {
         return manager
                 .createQuery("select bh from BusinessHours bh "
                 			+ "order by bh.date"
-                			+ "limit :offset,:max",
+                			+ (max > 0 ? "limit :offset,:max" : ""),
                 			BusinessHours.class)
                 .setParameter("offset", offset)
                 .setParameter("max", max)
@@ -86,7 +86,7 @@ public class BusinessHoursDao {
         return manager
                 .createQuery("select bh from BusinessHours bh join bh.sportsCentres sc where sc.id=:centreId"
                 			+ "order by bh.date"
-                			+ "limit :offset,:max", 
+                			+ (max > 0 ? "limit :offset,:max" : ""),
                 			BusinessHours.class)
                 .setParameter("centreId", centreId)
                 .setParameter("offset", offset)
@@ -116,7 +116,7 @@ public class BusinessHoursDao {
         return manager
                 .createQuery("select bh from BusinessHours bh join bh.sportsCentreFacilities scf where scf.id=:facilityId"
                 			+ "order by bh.date"
-                			+ "limit :offset,:max", 
+                			+ (max > 0 ? "limit :offset,:max" : ""), 
                 			BusinessHours.class)
                 .setParameter("facilityId", facilityId)
                 .setParameter("offset", offset)
@@ -134,4 +134,13 @@ public class BusinessHoursDao {
     			.setParameter("facilityId", facilityId)
     			.getSingleResult();
     }
+
+	public BusinessHours getFacilityHoursForDay(Long facilityId, int dayOfWeek) {
+		return manager.createQuery("select bh from BusinessHours bh join bh.sportsCentreFacilities scf where scf.id=:facilityId"
+								+ "and bh.day=:day", 
+								BusinessHours.class)
+				.setParameter("facilityId", facilityId)
+				.setParameter("day", dayOfWeek)
+				.getSingleResult();
+	}
 }
