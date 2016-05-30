@@ -1,7 +1,9 @@
 package jeelab.ws;
 
+import java.security.Principal;
 import java.util.List;
 
+import javax.annotation.security.PermitAll;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
@@ -14,6 +16,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import exception.UserUnavailableException;
 import jeelab.model.builder.UserBuilder;
 import jeelab.model.dao.ReservationDao;
 import jeelab.model.dao.UserDao;
@@ -41,16 +44,19 @@ public class UserWS {
 	private UserBuilder userBuilder;
 	@Inject
 	private AddressStorage address;
+	@Inject
+	private Principal loggedUser;
 	
 	/**
 	 * Registruje noveho uzivatele s roli "ROLE_USER"
 	 * @param form
 	 * @return
+	 * @throws UserUnavailableException 
 	 */
 	@POST()
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addUser(@Valid RegistrationForm form) {
+	public Response addUser(@Valid RegistrationForm form) throws UserUnavailableException {
 		User user = userBuilder
 				.firstname(form.getFirstname())
 				.lastname(form.getLastname())
@@ -59,13 +65,16 @@ public class UserWS {
 				.setRole(UserBuilder.ROLE_USER)
 				.build();
 		userDao.save(user);
-		UserResponse response = new UserResponse()
-				.id(user.getId())
-				.url(address.user(user.getId()))
-				.firstname(user.getFirstname())
-				.lastname(user.getLastname())
-				.email(user.getEmail());
-		return Response.status(Status.CREATED).entity(response).build();
+		return Response.status(Status.CREATED).entity(userResponse(user)).build();
+	}
+	
+	@GET()
+	@Path("/login")
+	@PermitAll
+	public Response login() {
+		String email = loggedUser.getName();
+		User user = userDao.getbyEmail(email);
+		return Response.ok(userResponse(user)).build();
 	}
 	
 	/**
@@ -76,8 +85,20 @@ public class UserWS {
 	@GET()
 	@Path("/{userId}/reservations")
 	public Response getReservations(@PathParam("userId") Long userId) {
-		List<Reservation> reservations = reservationDao.getUserReservations(userId);
+		//TODO doladit
+		List<Reservation> reservations = reservationDao.getUserReservations(userId, 100l, 0l);
 		return Response.ok(new ListWrapper(reservations)).build();
+	}
+	
+	private UserResponse userResponse(User user) {
+		UserResponse response = new UserResponse()
+			.id(user.getId())
+			.url(address.user(user.getId()))
+			.firstname(user.getFirstname())
+			.lastname(user.getLastname())
+			.email(user.getEmail())
+			.roles(user.getRoles());
+		return response;
 	}
 	
 }

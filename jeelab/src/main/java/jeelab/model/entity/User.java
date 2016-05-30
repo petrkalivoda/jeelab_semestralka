@@ -42,7 +42,7 @@ public class User implements JpaEntity {
 	@Column(name = "active")
 	private boolean active = true;
 	
-    @ManyToMany(targetEntity = Role.class)
+    @ManyToMany(targetEntity = Role.class, fetch = FetchType.EAGER)
     private Collection<Role> roles;
 	
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)

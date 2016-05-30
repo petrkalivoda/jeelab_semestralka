@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import exception.DependentEntityException;
 import jeelab.model.builder.SportsCentreBuilder;
 import jeelab.model.entity.FacilityType;
 import jeelab.model.entity.SportsCentre;
@@ -89,6 +90,8 @@ public class SportsCentreDao {
 	
 	public void deleteFacilityType(long id) {
 		FacilityType type = manager.find(FacilityType.class, id);
+		if (type.getFacilities().size() > 0)
+			throw new DependentEntityException();
 		if (type != null)
 			manager.remove(type);
 	}

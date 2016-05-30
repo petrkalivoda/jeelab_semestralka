@@ -15,8 +15,9 @@
 				</div>
 				<ul class="nav navbar-nav">
 					<li><a href="#sports-centre">Sportoviště</a></li>
+					<li data-ng-show="logged"><a href="#facility/type">Typy zařízení</a></li>
 				</ul>
-				<ul class="nav navbar-nav navbar-right">
+				<ul data-ng-controller="AuthController" class="nav navbar-nav navbar-right">
 					<li data-ng-show="!logged">
 						<a href="#registration">
 							<span class="glyphicon glyphicon-user"></span>
@@ -27,6 +28,12 @@
 						<a href="#login">
 							<span class="glyphicon glyphicon-log-in"></span>
 							<span>Přihlásit se</span>
+						</a>
+					</li>
+					<li data-ng-show="logged">
+						<a href="#" data-ng-click="auth.logout()">
+							<span class="glyphicon glyphicon-log-out"></span>
+							<span>Odhlásit se</span>
 						</a>
 					</li>
 				</ul>
@@ -61,7 +68,11 @@
 	<script src = "view/resources/js/class/Input.js"></script>
 	<script src = "view/resources/js/class/AddressStorage.js"></script>
 	<script src = "view/resources/js/class/Model.js"></script>
+	<script src = "view/resources/js/class/Base64.js"></script>
 	
 	<script src = "view/resources/js/controller/RegistrationController.js"></script>
+	<script src = "view/resources/js/controller/AuthController.js"></script>
+	<script src = "view/resources/js/controller/FacilityController.js"></script>
+	
 </body>
 </html>

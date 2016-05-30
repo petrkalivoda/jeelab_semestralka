@@ -1,0 +1,16 @@
+<meta charset="UTF-8">
+
+<div class="form-container">
+	<h3>Přihlásit se</h3>
+	<form id="login-form">
+		<label class="input-group">
+			<span class="input-group-addon">@</span>
+			<input class="form-control" type="text" name="email" data-ng-model="auth.data.email" placeholder="e-mail">
+		</label>			
+		<label class="input-group">
+			<span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+			<input class="form-control" type="password" name="password" data-ng-model="auth.data.password" placeholder="heslo">
+		</label>
+		<button class="btn btn-lg btn-success btn-block" data-ng-click="auth.login()">Přihlásit se</button>
+	</form>
+</div>

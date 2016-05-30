@@ -1,0 +1,63 @@
+<meta charset="UTF-8">
+
+<h3>Typy zařízení</h3>
+<div class="action-container">
+	<button class="btn btn-success" data-ng-click="facility.openFacilityTypeAddModal()"
+		data-toggle="modal" data-target="{{facility.type.modalSelector}}">
+		<span class="glyphicon glyphicon-plus"></span>
+		Nový typ
+	</button>
+</div>
+<table class = "table table-striped">
+
+	<thead>
+		<tr>
+			<th>#</th>
+			<th>Jméno</th>
+			<th>Akce</th>
+		</tr>
+	</thead>
+	<tfoot>
+		<tr>
+			<td colspan="3">Celkem: {{facility.type.list.count}}</td>
+		</tr>
+	</tfoot>
+	<tbody>
+		<tr data-ng-repeat="t in facility.type.list.list">
+			<td class="id-tab">{{t.id}}</td>
+			<td>{{t.name}}</td>
+			<td class="action-tab">
+				<button title="upravit" class="btn btn-info glyphicon glyphicon-pencil" 
+					data-ng-click="facility.openFacilityTypeUpdateModal(t)"
+					data-toggle="modal" data-target="{{facility.type.modalSelector}}"></button>
+				<button title="smazat" class="btn btn-danger glyphicon glyphicon-remove" 
+					data-ng-click="facility.deleteType(t.url)"></button>
+			</td>
+		</tr>
+	</tbody>
+
+</table>
+
+<!-- Modal okno s formularem pro pridani a upravu typu -->
+<div id="{{facility.type.modalId}}" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Typ zařízení</h4>
+			</div>
+			<form id="facility-type-form">
+				<div class="modal-body">		
+					<label class="form-group">
+						Jméno
+						<input class="form-control" type="text" name="name" data-ng-model="facility.type.form.name">
+					</label>
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-info" data-ng-click="facility.type.closeFacilityTypeModal()">zrušit</button>
+					<button class="btn btn-success" data-ng-click="facility.type.modal.submit()">{{facility.type.modal.btn}}</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

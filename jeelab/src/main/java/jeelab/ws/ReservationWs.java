@@ -38,11 +38,12 @@ public class ReservationWs {
 	 * Vytvori rezervaci. Rezervaci muze vytvorit pouze aktivni uzivatel ve volnem terminu
 	 * @param form
 	 * @return
+	 * @throws Exception 
 	 */
 	@POST()
 	@Consumes(MediaType.APPLICATION_JSON)
 	@RolesAllowed("ROLE_USER")
-	public Response newReservation(@Valid ReservationForm form) {
+	public Response newReservation(@Valid ReservationForm form) throws Exception {
 		Reservation reservation = reservationBuilder
 				.date(form.getDate())
 				.from(form.getFrom())

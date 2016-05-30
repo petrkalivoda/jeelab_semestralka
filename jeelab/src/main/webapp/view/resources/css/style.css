@@ -7,6 +7,10 @@ label {
 	display: block !important;
 }
 
+form#login-form label {
+	display: table !important;
+}
+
 .form-container {
 	position: absolute;
 	width: 500px;
@@ -43,4 +47,16 @@ form .error-container ul {
 
 form .error-container li {
 	list-style-type: none;
+}
+
+td.id-tab {
+	width: 50px;
+}
+
+td.action-tab {
+	width: 150px;
+	text-align: left;
+}
+.action-container {
+	text-align: right;
 }

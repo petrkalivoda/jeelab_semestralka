@@ -4,15 +4,12 @@ var Model = function(http, globalMessages) {
 }
 
 Model.prototype.get = function(address, filters, successCall, errorCall) {
-	var params = "";
-	if(filters == null) {
+	if(filters == null)
 		filters = {};
-	} else { 
-		params = this.parameterParser.processGetData(filters.parameters);
-	}
 	this.http({
 		method: 'GET',
-		url: address+params,
+		url: address,
+		params: filters.params,
 		headers: filters.headers,
 	}).then(function success(response) {
 		if (successCall != null)
@@ -23,7 +20,6 @@ Model.prototype.get = function(address, filters, successCall, errorCall) {
 		this.globalMessages.push("danger", "Chyba: " + response.status);
 		console.log(response.body);
 	}.bind(this));
-	
 }
 
 Model.prototype.post = function(address, data, successCall, errorCall) {
@@ -42,7 +38,7 @@ Model.prototype.post = function(address, data, successCall, errorCall) {
 	}.bind(this));
 }
 
-Model.prototype.put = function(address, data, form, successCall, errorCall) {
+Model.prototype.put = function(address, data, successCall, errorCall) {
 	this.http({
 		method: 'PUT',
 		data: data,

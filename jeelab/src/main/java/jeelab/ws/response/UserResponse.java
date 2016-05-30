@@ -1,7 +1,13 @@
 package jeelab.ws.response;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+import jeelab.model.entity.Role;
 
 @JsonInclude(Include.NON_NULL)
 public class UserResponse {
@@ -11,6 +17,7 @@ public class UserResponse {
 	private String firstname;
 	private String lastname;
 	private String email;
+	private List<String> roles;
 	
 	public UserResponse id(long id) {
 		this.id = id;
@@ -34,6 +41,15 @@ public class UserResponse {
 	
 	public UserResponse email(String email) {
 		this.email = email;
+		return this;
+	}
+	
+	public UserResponse roles(Collection<Role> roles) {
+		if (roles == null) return this;
+		this.roles = new ArrayList<String>();
+		for (Role r : roles) {
+			this.roles.add(r.getName());
+		}
 		return this;
 	}
 
@@ -75,6 +91,14 @@ public class UserResponse {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public List<String> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<String> roles) {
+		this.roles = roles;
 	}
 		
 }

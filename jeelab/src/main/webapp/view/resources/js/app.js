@@ -14,6 +14,12 @@ route.config(["$routeProvider", function($routeProvider) {
 	}).when("/registration", {
 		templateUrl: 'view/pages/content/registration.html',
 		controller: 'RegistrationController'
+	}).when("/login", {
+		templateUrl: 'view/pages/content/login.html',
+		controller: 'AuthController'
+	}).when("/facility/type", {
+		templateUrl: 'view/pages/content/facility-type.html',
+		controller: 'FacilityController'
 	}).otherwise({
 		templateUrl: 'view/pages/content/home.html',
 	});
@@ -55,5 +61,9 @@ route.factory("addressStorage", function($cookies, $http, globalMessages) {
 
 route.factory("rest", function($http, globalMessages) {
 	return new Model($http, globalMessages);
+});
+
+route.factory("base64", function() {
+	return new Base64();
 });
 
