@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import exception.UserUnavailableException;
 import jeelab.model.builder.UserBuilder;
 import jeelab.model.entity.User;
 import jeelab.view.UserForm;
@@ -37,13 +38,21 @@ public class UserDao {
                 .getResultList();
     }
     
-    public void save(User user) {
+    public void save(User user) throws UserUnavailableException {
+    	if(getbyEmail(user.getEmail()) != null){
+    		throw new UserUnavailableException();
+    	}
+    	
     	manager.persist(user);
     	manager.flush();
     }
     
-    public void updateUser(long id, UserForm form) {
+    public void updateUser(long id, UserForm form) throws UserUnavailableException {
 		User user = manager.find(User.class, id);
+		if(!user.getEmail().equals(form.getEmail()) && getbyEmail(form.getEmail()) != null){
+			throw new UserUnavailableException();
+		}
+		
 		if(user != null){
 			userBuilder
 				.firstname(form.getFirstName())
