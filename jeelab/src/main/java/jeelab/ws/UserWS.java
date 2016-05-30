@@ -19,6 +19,7 @@ import jeelab.model.dao.ReservationDao;
 import jeelab.model.dao.UserDao;
 import jeelab.model.entity.Reservation;
 import jeelab.model.entity.User;
+import jeelab.setup.RolesInitializer;
 import jeelab.view.RegistrationForm;
 import jeelab.ws.response.AddressStorage;
 import jeelab.ws.response.ListWrapper;
@@ -56,7 +57,7 @@ public class UserWS {
 				.lastname(form.getLastname())
 				.email(form.getEmail())
 				.password(form.getPassword())
-				.setRole(UserBuilder.ROLE_USER)
+				.setRole(RolesInitializer.ROLE_USER)
 				.build();
 		userDao.save(user);
 		UserResponse response = new UserResponse()
@@ -76,7 +77,7 @@ public class UserWS {
 	@GET()
 	@Path("/{userId}/reservations")
 	public Response getReservations(@PathParam("userId") Long userId) {
-		List<Reservation> reservations = reservationDao.getUserReservations(userId);
+		List<Reservation> reservations = reservationDao.getUserReservations(userId, null, null);
 		return Response.ok(new ListWrapper(reservations)).build();
 	}
 	

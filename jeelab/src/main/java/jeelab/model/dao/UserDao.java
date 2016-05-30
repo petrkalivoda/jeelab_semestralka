@@ -9,7 +9,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import jeelab.model.builder.UserBuilder;
-import jeelab.model.entity.Role;
 import jeelab.model.entity.User;
 import jeelab.view.UserForm;
 
@@ -63,18 +62,6 @@ public class UserDao {
     	return manager
     			.createQuery("select user from User user where user.email = ?", User.class)
     			.setParameter(1, email)
-    			.getSingleResult();
-    }
-    
-    /**
-     * Vraci entitu Role podle jejiho jmena
-     * @param role
-     * @return
-     */
-    public Role getRoleByName(String role) {
-    	return manager
-    			.createQuery("select role from Role role where role.name = ?", Role.class)
-    			.setParameter(1, role)
     			.getSingleResult();
     }
     

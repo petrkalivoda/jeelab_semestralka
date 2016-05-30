@@ -90,6 +90,7 @@ public class ReservationDao {
 	 * @return
 	 */
     public List<Reservation> getUserReservations(Long userId, Long max, Long offset) {
+    	/// !!!FIXME!!! use Optional<Long> or method overloading or something!
         return manager
                 .createQuery("select reservation from Reservation reservation where reservation.user.id = :userId"
                 			+ "order by reservation.date"
