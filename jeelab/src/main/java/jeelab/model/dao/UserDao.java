@@ -6,6 +6,7 @@ import javax.ejb.Stateless;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 
 import jeelab.exception.UserUnavailableException;
@@ -49,16 +50,17 @@ public class UserDao {
     
     public void updateUser(long id, UserForm form) throws UserUnavailableException {
 		User user = manager.find(User.class, id);
-		if(!user.getEmail().equals(form.getEmail()) && getbyEmail(form.getEmail()) != null){
-			throw new UserUnavailableException();
-		}
-		
 		if(user != null){
+			if(!user.getEmail().equals(form.getEmail()) && getbyEmail(form.getEmail()) != null){
+				throw new UserUnavailableException();
+			}
 			userBuilder
 				.firstname(form.getFirstName())
 				.lastname(form.getLastName())
 				.email(form.getLastName())
 				.password(form.getPassword());
+		} else {
+			throw new EntityNotFoundException();
 		}
 	}
     
@@ -68,11 +70,13 @@ public class UserDao {
      * @return
      */
     public User getbyEmail(String email) {
-    	// !!! FIXME !!! getSingleResult hází výjimku při nenalezení.
-    	return manager
-    			.createQuery("select user from User user where user.email = ?", User.class)
-    			.setParameter(1, email)
-    			.getSingleResult();
+    	List<User> list = manager
+		.createQuery("select user from User user where user.email = ?", User.class)
+		.setParameter(1, email)
+		.getResultList();
+    	if (list.isEmpty())
+    		return null;
+    	return list.get(0); 
     }
     
     public User get(long id) {
