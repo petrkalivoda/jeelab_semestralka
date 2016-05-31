@@ -1,4 +1,4 @@
-package exception;
+package jeelab.exception;
 
 public class DependentEntityException extends RuntimeException {
 

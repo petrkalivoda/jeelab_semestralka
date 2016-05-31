@@ -7,7 +7,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import exception.DependentEntityException;
+import jeelab.exception.DependentEntityException;
 import jeelab.model.builder.SportsCentreBuilder;
 import jeelab.model.entity.FacilityType;
 import jeelab.model.entity.SportsCentre;
