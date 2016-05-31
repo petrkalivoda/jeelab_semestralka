@@ -7,7 +7,7 @@ import javax.inject.Inject;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
-import jeelab.model.dao.UserDao;
+import jeelab.model.dao.RoleDao;
 import jeelab.model.entity.Role;
 import jeelab.model.entity.User;
 
@@ -15,8 +15,7 @@ public class UserBuilder implements EntityBuilder<User> {
 	
 	public static final String ROLE_USER = "ROLE_USER";
 	
-	@Inject
-	private UserDao userDao;
+	private @Inject RoleDao roleDao;
 	
 	public String firstname;
 	public String lastname;
@@ -45,7 +44,7 @@ public class UserBuilder implements EntityBuilder<User> {
 	}
 	
 	public UserBuilder setRole(String roleName) {
-		Role role = userDao.getRoleByName(roleName);
+		Role role = roleDao.getByName(roleName);
 		if (role == null)
 			return this;
 		if (this.roles == null)

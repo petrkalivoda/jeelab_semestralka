@@ -8,10 +8,6 @@
 	<version>1.0</version>
 	<packaging>war</packaging>
 
-	<properties>
-		<version.wildfly-swarm-plugin>1.0.0.Beta8</version.wildfly-swarm-plugin>
-	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
@@ -54,6 +50,12 @@
 			<artifactId>resteasy-validator-provider-11</artifactId>
 			<version>3.0.16.Final</version>
 			<scope>compile</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>jboss-logging</artifactId>
+					<groupId>org.jboss.logging</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>javax.enterprise</groupId>
@@ -62,26 +64,66 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-		    <groupId>org.jboss.as</groupId>
-		    <artifactId>jboss-as-security</artifactId>
-		    <version>7.2.0.Final</version>
-		</dependency>		
-		<dependency>
-		    <groupId>commons-codec</groupId>
-		    <artifactId>commons-codec</artifactId>
-		    <version>1.4</version>
+			<groupId>org.wildfly</groupId>
+			<artifactId>wildfly-security</artifactId>
+			<version>10.0.0.Final</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>jboss-logging</artifactId>
+					<groupId>org.jboss.logging</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
-		    <groupId>org.jboss.resteasy</groupId>
-		    <artifactId>jaxrs-api</artifactId>
-		    <version>3.0.12.Final</version>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>jaxrs-api</artifactId>
+			<version>3.0.12.Final</version>
 		</dependency>
 		<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
 			<version>2.9.4</version>
 		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.arquillian.junit</groupId>
+			<artifactId>arquillian-junit-container</artifactId>
+			<version>1.1.11.Final</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.logging</groupId>
+			<artifactId>jboss-logging</artifactId>
+			<version>3.3.0.Final</version>
+		</dependency>
 	</dependencies>
+
+	<profiles>
+		<profile>
+			<id>arquillian-chameleon</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<dependencies>
+				<dependency>
+					<groupId>org.arquillian.container</groupId>
+					<artifactId>arquillian-container-chameleon</artifactId>
+					<version>1.0.0.Alpha6</version>
+					<scope>test</scope>
+				</dependency>
+			</dependencies>
+		</profile>
+	</profiles>
+
 	<repositories>
 		<repository>
 			<id>central</id>
@@ -89,7 +131,7 @@
 			<url>http://central.maven.org/maven2</url>
 		</repository>
 	</repositories>
-	
+
 	<build>
 		<plugins>
 			<plugin>
@@ -101,18 +143,7 @@
 					<target>1.8</target>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.wildfly.swarm</groupId>
-				<artifactId>wildfly-swarm-plugin</artifactId>
-				<version>${version.wildfly-swarm-plugin}</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>package</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
 		</plugins>
 	</build>
+
 </project>

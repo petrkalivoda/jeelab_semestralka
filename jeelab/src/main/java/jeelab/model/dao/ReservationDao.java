@@ -10,7 +10,7 @@ import javax.persistence.TemporalType;
 
 import org.joda.time.DateTime;
 
-import exception.ReservationUnavailableException;
+import jeelab.exception.ReservationUnavailableException;
 import jeelab.model.builder.ReservationBuilder;
 import jeelab.model.entity.BusinessHours;
 import jeelab.model.entity.Reservation;
@@ -34,6 +34,7 @@ public class ReservationDao {
     private EntityManager manager;
 	
 	private boolean isAvailable(Reservation reservation){
+		// !!! FIXME !!! getSingleResult hází výjimku při nenalezení.
 		return ((Long) manager.createQuery("select count(reservation) from Reservation reservation "
 							+ "where reservation.sportsCentreFacility=:res "
 							+ "and reservation.date=:date "
@@ -58,7 +59,7 @@ public class ReservationDao {
 		return hours.getOpenTime() <= reservation.getFrom() && hours.getCloseTime() >= reservation.getTo();
 	}
 	
-	public void save(Reservation reservation) throws Exception {
+	public void save(Reservation reservation) throws ReservationUnavailableException {
 		if(!isAvailable(reservation) || isOutOfHours(reservation)){
 			throw new ReservationUnavailableException();
 		}
@@ -130,6 +131,7 @@ public class ReservationDao {
 	 * @return
 	 */
     public List<Reservation> getUserReservations(Long userId, Long max, Long offset) {
+    	/// !!!FIXME!!! use Optional<Long> or method overloading or something!
         return manager
                 .createQuery("select reservation from Reservation reservation where reservation.user.id = :userId "
                 			+ "order by reservation.date "

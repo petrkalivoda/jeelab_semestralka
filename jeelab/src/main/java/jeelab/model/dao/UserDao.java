@@ -8,9 +8,8 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import exception.UserUnavailableException;
+import jeelab.exception.UserUnavailableException;
 import jeelab.model.builder.UserBuilder;
-import jeelab.model.entity.Role;
 import jeelab.model.entity.User;
 import jeelab.view.UserForm;
 
@@ -69,21 +68,10 @@ public class UserDao {
      * @return
      */
     public User getbyEmail(String email) {
+    	// !!! FIXME !!! getSingleResult hází výjimku při nenalezení.
     	return manager
     			.createQuery("select user from User user where user.email = ?", User.class)
     			.setParameter(1, email)
-    			.getSingleResult();
-    }
-    
-    /**
-     * Vraci entitu Role podle jejiho jmena
-     * @param role
-     * @return
-     */
-    public Role getRoleByName(String role) {
-    	return manager
-    			.createQuery("select role from Role role where role.name = ?", Role.class)
-    			.setParameter(1, role)
     			.getSingleResult();
     }
     
