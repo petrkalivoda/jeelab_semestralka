@@ -17,6 +17,12 @@ import jeelab.model.entity.User;
 import jeelab.test.AbstractDeployableTest;
 import jeelab.view.UserForm;
 
+/**
+ * Test pro UserDao
+ * 
+ * @author Petr Kalivoda
+ *
+ */
 public class UserDaoTest extends AbstractDeployableTest {
 
 	private @Inject UserDao userDao;
