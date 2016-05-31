@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import jeelab.exception.UserNotFoundException;
 import jeelab.exception.UserUnavailableException;
 import jeelab.model.builder.UserBuilder;
 import jeelab.model.entity.User;
@@ -47,8 +48,12 @@ public class UserDao {
     	manager.flush();
     }
     
-    public void updateUser(long id, UserForm form) throws UserUnavailableException {
+    public void updateUser(long id, UserForm form) throws UserUnavailableException, UserNotFoundException {
 		User user = manager.find(User.class, id);
+		if(user == null) {
+			throw new UserNotFoundException();
+		}
+		
 		if(!user.getEmail().equals(form.getEmail()) && getbyEmail(form.getEmail()) != null){
 			throw new UserUnavailableException();
 		}
@@ -68,11 +73,12 @@ public class UserDao {
      * @return
      */
     public User getbyEmail(String email) {
-    	// !!! FIXME !!! getSingleResult hází výjimku při nenalezení.
-    	return manager
+    	List<User> users = manager
     			.createQuery("select user from User user where user.email = ?", User.class)
     			.setParameter(1, email)
-    			.getSingleResult();
+    			.getResultList();
+    	
+    	return users.isEmpty() ? null : users.get(0);
     }
     
     public User get(long id) {
