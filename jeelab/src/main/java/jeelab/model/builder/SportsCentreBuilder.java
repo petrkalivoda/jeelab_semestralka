@@ -1,7 +1,7 @@
 package jeelab.model.builder;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import jeelab.model.entity.BusinessHours;
 import jeelab.model.entity.SportsCentre;
@@ -41,18 +41,24 @@ public class SportsCentreBuilder implements EntityBuilder<SportsCentre> {
 		return this;
 	}
 	
-	// TODO predelat - nehezky :(
+	// TODO predelat - nehezky :( PKa: takhle je to o něco kratší, spokojenej? :D
 	public SportsCentreBuilder hours(List<HoursForm> hours) {
 		if (hours == null || hours.isEmpty()) return this;
-		this.hours = new ArrayList<BusinessHours>();
-		BusinessHours entityHour = null;
-		for (HoursForm h : hours) {
-			entityHour = new BusinessHours();
-			entityHour.setDay(h.getDay());
-			entityHour.setOpenTime(h.getOpen());
-			entityHour.setCloseTime(h.getClose());
-			this.hours.add(entityHour);
-		}
+		
+		this.hours = hours.stream().map( h -> {
+			BusinessHours bh = new BusinessHours();
+			bh.setDay(h.getDay());
+			bh.setOpenTime(h.getOpen());
+			bh.setCloseTime(h.getClose());
+			return bh;
+		}).collect(Collectors.toList());
+		
+		return this;
+	}
+	
+	// to nahoře je beztak uncool.
+	public SportsCentreBuilder hoursList(List<BusinessHours> hours) {
+		this.hours = hours;
 		return this;
 	}
 	

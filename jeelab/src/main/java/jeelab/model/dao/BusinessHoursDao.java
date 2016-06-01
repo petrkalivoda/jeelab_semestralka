@@ -5,6 +5,10 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import jeelab.model.entity.BusinessHours;
 import jeelab.view.HoursForm;
@@ -57,14 +61,23 @@ public class BusinessHoursDao {
 	 * @return
 	 */
     public List<BusinessHours> getBusinessHours(Long max, Long offset) {
-        return manager
-                .createQuery("select bh from BusinessHours bh "
-                			+ "order by bh.date "
-                			+ (max > 0 ? "limit :offset,:max" : ""),
-                			BusinessHours.class)
-                .setParameter("offset", offset)
-                .setParameter("max", max)
-                .getResultList();
+    	CriteriaBuilder cb = manager.getCriteriaBuilder();
+    	
+    	CriteriaQuery<BusinessHours> cq = cb.createQuery(BusinessHours.class);
+    	Root<BusinessHours> root = cq.from(BusinessHours.class);
+    	cq.orderBy(cb.asc(root.get("day")));
+    	
+        TypedQuery<BusinessHours> q = manager.createQuery(cq);
+        
+        if(max != null && !max.equals(0L)) {
+        	q.setMaxResults(max.intValue());
+        }
+        
+        if(offset != null && !offset.equals(0L)) {
+        	q.setFirstResult(offset.intValue());
+        }
+        
+        return q.getResultList();
     }
     
     /**
@@ -72,79 +85,17 @@ public class BusinessHoursDao {
      * @return
      */
     public Long getBusinessHoursCount(){
-    	// !!! FIXME !!! getSingleResult hází výjimku při nenalezení.
     	return (Long) manager.createQuery("select count(bh) from BusinessHours bh").getSingleResult();
-    }
-	
-	/**
-	 * Business hours by centre
-	 * @param centreId
-	 * @param max
-	 * @param offset
-	 * @return
-	 */
-    public List<BusinessHours> getCentreBusinessHours(Long centreId, Long max, Long offset) {
-        return manager
-                .createQuery("select bh from BusinessHours bh join bh.sportsCentres sc where sc.id=:centreId "
-                			+ "order by bh.date "
-                			+ (max > 0 ? "limit :offset,:max" : ""),
-                			BusinessHours.class)
-                .setParameter("centreId", centreId)
-                .setParameter("offset", offset)
-                .setParameter("max", max)
-                .getResultList();
-    }
-    
-    /**
-     * Total number of BusinessHours for centre
-     * @param userId
-     * @return
-     */
-    public Long getCentreBusinessHoursCount(Long centreId){
-    	// !!! FIXME !!! getSingleResult hází výjimku při nenalezení.
-    	return (Long) manager.createQuery("select count(bh) from BusinessHours bh join bh.sportsCentres sc where sc.id=:centreId")
-    			.setParameter("centreId", centreId)
-    			.getSingleResult();
-    }
-	
-    /**
-	 * Business hours by facility
-	 * @param facilityId
-	 * @param max
-	 * @param offset
-	 * @return
-	 */
-    public List<BusinessHours> getFacilityBusinessHours(Long facilityId, Long max, Long offset) {
-        return manager
-                .createQuery("select bh from BusinessHours bh join bh.sportsCentreFacilities scf where scf.id=:facilityId "
-                			+ "order by bh.date "
-                			+ (max > 0 ? "limit :offset,:max" : ""), 
-                			BusinessHours.class)
-                .setParameter("facilityId", facilityId)
-                .setParameter("offset", offset)
-                .setParameter("max", max)
-                .getResultList();
-    }
-    
-    /**
-     * Total number of BusinessHours for facility
-     * @param userId
-     * @return
-     */
-    public Long getFacilityBusinessHoursCount(Long facilityId){
-    	// !!! FIXME !!! getSingleResult hází výjimku při nenalezení.
-    	return (Long) manager.createQuery("select count(bh) from BusinessHours bh join bh.sportsCentreFacilities scf where scf.id=:facilityId")
-    			.setParameter("facilityId", facilityId)
-    			.getSingleResult();
     }
 
 	public BusinessHours getFacilityHoursForDay(Long facilityId, int dayOfWeek) {
-		// !!! FIXME !!! getSingleResult hází výjimku při nenalezení.
-		return manager.createQuery("select bh from BusinessHours bh join bh.sportsCentreFacilities scf where scf.id=:facilityId "
+		List<BusinessHours> hoursList =  manager.createQuery("select bh from BusinessHours bh join bh.sportsCentreFacilities scf where scf.id=:facilityId "
 								+ "and bh.day=:day", 
 								BusinessHours.class)
 				.setParameter("facilityId", facilityId)
 				.setParameter("day", dayOfWeek)
-				.getSingleResult();
+				.getResultList();
+		
+		return hoursList.size() == 0 ? null : hoursList.get(0);
 	}
 }

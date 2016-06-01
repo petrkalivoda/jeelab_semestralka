@@ -46,6 +46,11 @@ public class SportsCentreFacilityBuilder implements EntityBuilder<SportsCentreFa
 		return this;
 	}
 	
+	public SportsCentreFacilityBuilder hoursList(List<BusinessHours> hours) {
+		this.hours = hours;
+		return this;
+	}
+	
 	@Override
 	public SportsCentreFacility build(SportsCentreFacility entity) {
 		if (centre != null)
