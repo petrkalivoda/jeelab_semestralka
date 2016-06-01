@@ -6,7 +6,6 @@ import javax.ejb.Stateless;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 
 import jeelab.exception.UserNotFoundException;
@@ -63,7 +62,8 @@ public class UserDao {
 				.firstname(form.getFirstName())
 				.lastname(form.getLastName())
 				.email(form.getLastName())
-				.password(form.getPassword());
+				.password(form.getPassword())
+				.build(user);
 		}
 	}
     

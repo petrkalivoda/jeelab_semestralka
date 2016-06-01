@@ -7,8 +7,8 @@ import static org.junit.Assert.assertTrue;
 
 import javax.inject.Inject;
 
+import org.junit.Before;
 import org.junit.Test;
-import org.testng.annotations.BeforeTest;
 
 import jeelab.exception.UserNotFoundException;
 import jeelab.exception.UserUnavailableException;
@@ -28,7 +28,7 @@ public class UserDaoTest extends AbstractDeployableTest {
 	private @Inject UserDao userDao;
 	private @Inject UserBuilder userBuilder;
 	
-	@BeforeTest
+	@Before
 	public void clearBuilder() {
 		userBuilder.clear();
 	}
