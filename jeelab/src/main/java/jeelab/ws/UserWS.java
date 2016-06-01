@@ -1,3 +1,4 @@
+
 package jeelab.ws;
 
 import java.security.Principal;
@@ -5,6 +6,7 @@ import java.util.List;
 
 import javax.annotation.security.PermitAll;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;

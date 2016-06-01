@@ -15,7 +15,10 @@
 	<thead>
 		<tr>
 			<th>#</th>
-			<th>Adresa</th>
+			<th>Ulice</th>
+			<th>Město</th>
+			<th>Země</th>
+			<th>Budova</th>
 			<th>Telefon</th>
 			<th>Akce</th>
 		</tr>
@@ -28,13 +31,14 @@
 	<tbody>
 		<tr data-ng-repeat="c in centre.list.list">
 			<td class="id-tab">{{c.id}}</td>
-			<td>
-				{{c.street}}<br>
-				{{c.city}} ({{c.country}})<br>
-				Budova: {{c.building}}
-			</td>
+			<td>{{c.street}}</td>
+			<td>{{c.city}}</td>
+			<td>{{c.country}}</td>
+			<td>{{c.building}}</td>
 			<td>{{c.phone}}</td>
 			<td class="action-tab">
+				<a title="detail" class="btn btn-success glyphicon glyphicon-search" 
+					href="#centre/{{c.id}}"></a>
 				<button data-ng-show="hasRole('ROLE_ADMIN')"
 					title="upravit" class="btn btn-info glyphicon glyphicon-pencil" 
 					data-ng-click="centre.openCentreUpdateModal(c)"

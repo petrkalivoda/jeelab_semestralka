@@ -9,9 +9,11 @@ import javax.persistence.PersistenceContext;
 
 import jeelab.exception.DependentEntityException;
 import jeelab.model.builder.SportsCentreBuilder;
+import jeelab.model.builder.SportsCentreFacilityBuilder;
 import jeelab.model.entity.FacilityType;
 import jeelab.model.entity.SportsCentre;
 import jeelab.model.entity.SportsCentreFacility;
+import jeelab.view.SportCentreFacilityForm;
 import jeelab.view.SportCentreForm;
 
 @Stateless
@@ -19,6 +21,8 @@ public class SportsCentreDao {
 	
 	@Inject
 	private SportsCentreBuilder sportsBuilder;
+	@Inject
+	private SportsCentreFacilityBuilder facilityBuilder;
 
 	@PersistenceContext(unitName = "jee")
     private EntityManager manager;
@@ -104,6 +108,21 @@ public class SportsCentreDao {
 	public void saveFacility(SportsCentreFacility facility) {
 		manager.persist(facility);
 		manager.flush();
+	}
+	
+	public void updateFacility(long id, SportCentreFacilityForm form) {
+		SportsCentreFacility facility = manager.find(SportsCentreFacility.class, id);
+		if (facility != null)
+			facilityBuilder
+				.type(form.getType())
+				.hours(form.getHours())
+				.build(facility);
+	}
+	
+	public void deleteFacility(long id) {
+		SportsCentreFacility type = manager.find(SportsCentreFacility.class, id);
+		if (type != null)
+			manager.remove(type);
 	}
 	
 	/**

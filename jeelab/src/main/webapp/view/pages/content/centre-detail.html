@@ -1,0 +1,132 @@
+<meta charset="UTF-8">
+
+<h3>Sportoviště {{centre.detail.id}}</h3>
+
+<div class="row action-container" data-ng-show="hasRole('ROLE_ADMIN')">
+	<button class="btn btn-success" data-ng-click="centre.openFacilityAddModal(centre.detail.facilityUrl)"
+		data-toggle="modal" data-target="{{centre.facility.modalSelector}}">
+		<span class="glyphicon glyphicon-plus"></span>
+		Nové zařízení
+	</button>
+</div>
+
+<div class="row">
+	<div class="col-md-4">
+ 		<h4>Informace</h4>
+ 		<ul>
+ 			<li><strong>Ulice:</strong> {{centre.detail.street}}</li>
+ 			<li><strong>Město:</strong> {{centre.detail.city}}</li>
+ 			<li><strong>Země:</strong> {{centre.detail.country}}</li>
+ 			<li><strong>Budova:</strong> {{centre.detail.building}}</li>
+ 			<li><strong>Telefon:</strong> {{centre.detail.phone}}</li>
+ 		</ul>
+ 		
+ 		<h4>Otevírací hodiny</h4>
+ 		<table class="table table-striped">
+ 			<thead>
+ 				<tr>
+ 					<th>Den</th>
+ 					<th>Začátek</th>
+ 					<th>Konec</th>
+ 				</tr>
+ 			</thead>
+ 			<tbody>
+ 				<tr data-ng-repeat="h in centre.detail.hours">
+	 				<td>{{h.day | day}}</td>
+	 				<td>{{h.open}}</td>
+	 				<td>{{h.close}}</td>
+	 			</tr>
+ 			</tbody>
+ 		</table>
+ 		
+ 	</div>
+ 	<div class="col-md-8">
+ 		<h4>Zařízení</h4>
+ 		<table class="table table-striped">
+ 			<thead>
+ 				<tr>
+ 					<th>#</th>
+ 					<th>Jméno</th>
+ 					<th>Hodiny</th>
+ 					<th>Akce</th>
+ 				</tr>
+ 			</thead>
+ 			<tbody>
+ 				<tr data-ng-repeat="f in centre.detail.facilities">
+	 				<td class="id-tab">{{f.id}}</td>
+	 				<td>{{f.type.name}}</td>
+	 				<td>
+	 					<ul>
+	 						<li data-ng-repeat="h in f.hours">
+	 							{{h.day | day}}: {{h.open}} - {{h.close}}
+	 						</li>
+	 					</ul>
+	 				</td>
+	 				<td class="action-tab">
+	 					<button data-ng-show="hasRole('ROLE_USER')"
+							title="rezervovat" class="btn btn-success glyphicon glyphicon-ok" 
+							data-ng-click="centre.createReservation(f)"
+							data-toggle="modal" data-target="{{centre.reservation.modalSelector}}"></button>
+	 					<button data-ng-show="hasRole('ROLE_ADMIN')"
+							title="upravit" class="btn btn-info glyphicon glyphicon-pencil" 
+							data-ng-click="centre.openFacilityUpdateModal($index, f)"
+							data-toggle="modal" data-target="{{centre.facility.modalSelector}}"></button>
+	 					<button data-ng-show="hasRole('ROLE_ADMIN')"
+							title="smazat" class="btn btn-danger glyphicon glyphicon-remove" 
+							data-ng-click="centre.deleteFacility($index, f.url)"></button>
+	 				</td>
+	 			</tr>
+ 			</tbody>
+ 		</table>
+ 	</div>
+ </div>
+ 
+ <!-- Modal okno s formularem pro pridani a upravu zarizeni -->
+<div id="{{centre.facility.modalId}}" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Typ zařízení</h4>
+			</div>
+			<form id="facility-form">
+				<div class="modal-body">				
+					<label class="form-group">
+						Typ
+						<select class="form-control" name="type" data-ng-model="centre.facility.form.type"
+							data-ng-options="f.id as f.name for f in centre.facility.type.list"
+						></select>
+					</label>					
+					<button class="btn btn-default" 
+						data-ng-show="centre.facility.form.hours.length < 7"
+						data-ng-click="centre.facility.addHours()">Přidat otevírací hodiny</button>
+					<br>
+					<br>
+					<div class="form-inline inline-hours" data-ng-repeat="h in centre.facility.form.hours">
+						<label class="form-group">
+							Den
+							<select class="form-control" name="day" data-ng-model="h.day"
+								data-ng-options="d.value as d.name for d in centre.select.day"
+							></select>
+						</label>
+						<label class="form-group">
+							Od
+							<input class="time form-control" type="text" name="open" data-ng-model="h.open">
+						</label>
+						<label class="form-group">
+							Do
+							<input class="time form-control" type="text" name="close" data-ng-model="h.close">
+						</label>
+						<button class="btn btn-default glyphicon glyphicon-remove"
+							data-ng-click="centre.facility.removeHours($index)"></button>
+					</div>
+					
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-info" data-ng-click="centre.closeFacilityModal()">zrušit</button>
+					<button class="btn btn-success" data-ng-click="centre.facility.modal.submit()">{{centre.facility.modal.btn}}</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
