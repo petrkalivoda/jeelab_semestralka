@@ -39,7 +39,7 @@ public class SportsCentre implements JpaEntity {
     @Column(name = "phone_number")
     private String phoneNumber;
     
-    @OneToMany(mappedBy = "sportsCentre")
+    @OneToMany(mappedBy = "sportsCentre", cascade= CascadeType.ALL)
     private Collection<SportsCentreFacility> facilities;
     
     @ManyToMany(targetEntity = BusinessHours.class, cascade = CascadeType.PERSIST)

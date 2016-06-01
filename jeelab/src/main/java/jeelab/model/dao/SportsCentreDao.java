@@ -37,6 +37,7 @@ public class SportsCentreDao {
 				.country(form.getCountry())
 				.phone(form.getPhone())
 				.building(form.getBuildingNumber())
+				.hours(form.getHours())
 				.build(centre);
 	}
 	

@@ -7,15 +7,14 @@
 <link rel="stylesheet" href="view/resources/css/bootstrap.min.css">
 </head>
 <body>
-		<header>
+	<header>
 		<nav class="navbar navbar-inverse">
 			<div class="container-fluid">
 				<div class="navbar-header">
 					<a class="navbar-brand" href="#/">Domů</a>
 				</div>
 				<ul class="nav navbar-nav">
-					<li><a href="#sports-centre">Sportoviště</a></li>
-					<li data-ng-show="logged"><a href="#facility/type">Typy zařízení</a></li>
+					<li data-ng-show="hasRole('ROLE_ADMIN')"><a href="#facility/type">Typy zařízení</a></li>
 				</ul>
 				<ul data-ng-controller="AuthController" class="nav navbar-nav navbar-right">
 					<li data-ng-show="!logged">
@@ -73,6 +72,7 @@
 	<script src = "view/resources/js/controller/RegistrationController.js"></script>
 	<script src = "view/resources/js/controller/AuthController.js"></script>
 	<script src = "view/resources/js/controller/FacilityController.js"></script>
+	<script src = "view/resources/js/controller/CentreController.js"></script>
 	
 </body>
 </html>

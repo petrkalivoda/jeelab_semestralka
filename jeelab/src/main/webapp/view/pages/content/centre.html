@@ -1,1 +1,116 @@
-<h1>Home</h1>
+<meta charset="UTF-8">
+
+<h1>Sportoviště</h1>
+
+<div class="action-container" data-ng-show="hasRole('ROLE_ADMIN')">
+	<button class="btn btn-success" data-ng-click="centre.openCentreAddModal()"
+		data-toggle="modal" data-target="{{centre.modalSelector}}">
+		<span class="glyphicon glyphicon-plus"></span>
+		Nové sportoviště
+	</button>
+</div>
+
+<table class = "table table-striped">
+
+	<thead>
+		<tr>
+			<th>#</th>
+			<th>Adresa</th>
+			<th>Telefon</th>
+			<th>Akce</th>
+		</tr>
+	</thead>
+	<tfoot>
+		<tr>
+			<td colspan="5">Celkem: {{centre.list.count}}</td>
+		</tr>
+	</tfoot>
+	<tbody>
+		<tr data-ng-repeat="c in centre.list.list">
+			<td class="id-tab">{{c.id}}</td>
+			<td>
+				{{c.street}}<br>
+				{{c.city}} ({{c.country}})<br>
+				Budova: {{c.building}}
+			</td>
+			<td>{{c.phone}}</td>
+			<td class="action-tab">
+				<button data-ng-show="hasRole('ROLE_ADMIN')"
+					title="upravit" class="btn btn-info glyphicon glyphicon-pencil" 
+					data-ng-click="centre.openCentreUpdateModal(c)"
+					data-toggle="modal" data-target="{{centre.modalSelector}}"></button>
+				<button data-ng-show="hasRole('ROLE_ADMIN')"
+					title="smazat" class="btn btn-danger glyphicon glyphicon-remove" 
+					data-ng-click="centre.deleteCentre(c.url)"></button>
+			</td>
+		</tr>
+	</tbody>
+
+</table>
+
+<!-- Modal okno s formularem pro pridani a upravu typu -->
+<div id="{{centre.modalId}}" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Typ zařízení</h4>
+			</div>
+			<form id="centre-type-form">
+				<div class="modal-body">		
+					<label class="form-group">
+						Ulice
+						<input class="form-control" type="text" name="street" data-ng-model="centre.form.street">
+					</label>		
+					<label class="form-group">
+						Město
+						<input class="form-control" type="text" name="city" data-ng-model="centre.form.city">
+					</label>		
+					<label class="form-group">
+						Země
+						<select class="form-control" name="country" data-ng-model="centre.form.country"
+							data-ng-options="o.value as o.name for o in centre.select.country"
+						></select>
+					</label>
+					<label class="form-group">
+						Budova
+						<input class="form-control" type="text" name="buildingNumber" data-ng-model="centre.form.buildingNumber">
+					</label>
+					<label class="form-group">
+						Telefon
+						<input class="form-control" type="text" name="phone" data-ng-model="centre.form.phone">
+					</label>
+					
+					<button class="btn btn-default" 
+						data-ng-show="centre.form.hours.length < 7"
+						data-ng-click="centre.addHours()">Přidat otevírací hodiny</button>
+					<br>
+					<br>
+					<div class="form-inline inline-hours" data-ng-repeat="h in centre.form.hours">
+						<label class="form-group">
+							Den
+							<select class="form-control" name="day" data-ng-model="h.day"
+								data-ng-options="d.value as d.name for d in centre.select.day"
+							></select>
+						</label>
+						<label class="form-group">
+							Od
+							<input class="time form-control" type="text" name="open" data-ng-model="h.open">
+						</label>
+						<label class="form-group">
+							Do
+							<input class="time form-control" type="text" name="close" data-ng-model="h.close">
+						</label>
+						<button class="btn btn-default glyphicon glyphicon-remove"
+							data-ng-click="centre.removeHours($index)"></button>
+					</div>
+					
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-info" data-ng-click="centre.closeCentreModal()">zrušit</button>
+					<button class="btn btn-success" data-ng-click="centre.modal.submit()">{{centre.modal.btn}}</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

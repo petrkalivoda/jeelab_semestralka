@@ -12,6 +12,19 @@ route.controller("AuthController", function($scope, $rootScope, $http, $cookies,
 		$http.defaults.headers.common['Authorization'] = "Basic";
 	}
 	
+	$rootScope.hasRole = function(role) {
+		if ($rootScope.user == null)
+			return false;
+		var has = false;
+		angular.forEach($rootScope.user.roles, function(userRole) {
+			if (role == userRole) {
+				has = true;
+				return;
+			}
+		});
+		return has;
+	}
+	
 	$scope.auth.login = function() {
 		if ($scope.auth.data.email == "" || $scope.auth.data.password == "") return;
 		var encoded = "Basic " + base64.encode($scope.auth.data.email + ":" + $scope.auth.data.password);

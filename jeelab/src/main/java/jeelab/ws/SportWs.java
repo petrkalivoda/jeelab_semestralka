@@ -134,6 +134,10 @@ public class SportWs {
 		return Response.status(Status.NO_CONTENT).build();
 	}
 	
+	/**
+	 * Vraci sportovni centra
+	 * @return
+	 */
 	@GET()
 	@Path("centre")
 	public Response sportsCentre() {
@@ -145,6 +149,11 @@ public class SportWs {
 		return Response.ok(new ListWrapper(list)).build();
 	}
 	
+	/**
+	 * Detail sportovniho centra vcetne oteviracich hodina a seznamu zarizeni
+	 * @param id
+	 * @return
+	 */
 	@GET()
 	@Path("centre/{id}")
 	public Response sportsCentre(@PathParam("id") Long id) {
@@ -154,6 +163,11 @@ public class SportWs {
 		return Response.ok(centreBuilder(centre, true)).build();
 	}
 	
+	/**
+	 * Nové sportovni centrum
+	 * @param form
+	 * @return
+	 */
 	@POST()
 	@Path("centre")
 	@RolesAllowed("ROLE_ADMIN")
@@ -170,6 +184,12 @@ public class SportWs {
 		return Response.status(Status.CREATED).entity(centreBuilder(centre, true)).build();
 	}
 	
+	/**
+	 * Uprava centra
+	 * @param id
+	 * @param form
+	 * @return
+	 */
 	@PUT()
 	@Path("centre/{id}")
 	@RolesAllowed("ROLE_ADMIN")
@@ -189,6 +209,12 @@ public class SportWs {
 		return Response.status(Status.NO_CONTENT).build();
 	}
 	
+	/**
+	 * Vytvori nove zarizeni
+	 * @param id
+	 * @param form
+	 * @return
+	 */
 	@POST()
 	@Path("centre/{id}/facility")
 	@RolesAllowed("ROLE_ADMIN")

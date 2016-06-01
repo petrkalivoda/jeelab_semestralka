@@ -10,13 +10,17 @@ route.config(["$routeProvider", function($routeProvider) {
 	
 	$routeProvider
 	.when("/", {
-		templateUrl: 'view/pages/content/home.html',
+		templateUrl: 'view/pages/content/centre.html',
+		controller: 'CentreController'
 	}).when("/registration", {
 		templateUrl: 'view/pages/content/registration.html',
 		controller: 'RegistrationController'
 	}).when("/login", {
 		templateUrl: 'view/pages/content/login.html',
 		controller: 'AuthController'
+	}).when("/facility", {
+		templateUrl: 'view/pages/content/facility.html',
+		controller: 'FacilityController'
 	}).when("/facility/type", {
 		templateUrl: 'view/pages/content/facility-type.html',
 		controller: 'FacilityController'

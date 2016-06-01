@@ -11,6 +11,14 @@ form#login-form label {
 	display: table !important;
 }
 
+input.time {
+	width: 80px !important;
+}
+
+.form-inline label {
+	display: inline-block !important;
+}
+
 .form-container {
 	position: absolute;
 	width: 500px;
@@ -22,6 +30,10 @@ form#login-form label {
 	padding-bottom: 5px;
 	margin-bottom: 20px;
 	border-bottom: 1px solid #ccc;
+}
+
+.inline-hours {
+	margin: 4px 0;
 }
 
 form .error span {
