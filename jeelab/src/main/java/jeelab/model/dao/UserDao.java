@@ -63,7 +63,8 @@ public class UserDao {
 				.firstname(form.getFirstName())
 				.lastname(form.getLastName())
 				.email(form.getLastName())
-				.password(form.getPassword());
+				.password(form.getPassword())
+				.build();
 		}
 	}
     
