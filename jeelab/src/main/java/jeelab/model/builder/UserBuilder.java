@@ -13,15 +13,13 @@ import jeelab.model.entity.User;
 
 public class UserBuilder implements EntityBuilder<User> {
 	
-	public static final String ROLE_USER = "ROLE_USER";
-	
 	private @Inject RoleDao roleDao;
 	
-	public String firstname;
-	public String lastname;
-	public String email;
-	public String hash;
-	public Collection<Role> roles;
+	private String firstname;
+	private String lastname;
+	private String email;
+	private String hash;
+	private Collection<Role> roles;
 	
 	public UserBuilder firstname(String firstname) {
 		this.firstname = firstname;
