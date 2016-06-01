@@ -12,6 +12,9 @@ route.config(["$routeProvider", function($routeProvider) {
 	.when("/", {
 		templateUrl: 'view/pages/content/centre.html',
 		controller: 'CentreController'
+	}).when("/centre/:centreId", {
+		templateUrl: 'view/pages/content/centre-detail.html',
+		controller: 'CentreController'
 	}).when("/registration", {
 		templateUrl: 'view/pages/content/registration.html',
 		controller: 'RegistrationController'
@@ -44,6 +47,29 @@ route.directive('hideAfterTimeout', function($timeout, globalMessages) {
 			}, time);
 		}
 	}
+});
+
+route.filter('day', function ($filter) {
+	return function (input) {
+		switch (input) {
+			case 1:
+				return "pondělí";
+			case 2:
+				return "úterý";
+			case 3:
+				return "středa";
+			case 4:
+				return "čtvrtek";
+			case 5:
+				return "pátek";
+			case 6:
+				return "sobota";
+			case 7:
+				return "neděle";
+			default:
+				return input;
+		}
+	};
 });
 
 // cdi

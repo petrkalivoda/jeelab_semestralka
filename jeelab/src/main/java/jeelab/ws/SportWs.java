@@ -231,6 +231,35 @@ public class SportWs {
 		return Response.status(Status.CREATED).entity(facilityBuilder(facility, false)).build();
 	}
 	
+	@PUT()
+	@Path("centre/{centreId}/facility/{facilityId}")
+	@RolesAllowed("ROLE_ADMIN")
+	public Response updateCentreFacility(
+			@PathParam("centreId") Long centreId,
+			@PathParam("facilityId") Long facilityId,
+			@Valid SportCentreFacilityForm form
+			) {
+		sportsDao.updateFacility(facilityId, form);
+		return Response.status(Status.OK).build();
+	}
+	
+	/**
+	 * Smaze zarizeni
+	 * @param centreId
+	 * @param facilityId
+	 * @return
+	 */
+	@DELETE()
+	@Path("centre/{centreId}/facility/{facilityId}")
+	@RolesAllowed("ROLE_ADMIN")
+	public Response deleteCentreFacility(
+			@PathParam("centreId") Long centreId,
+			@PathParam("facilityId") Long facilityId
+			) {
+		sportsDao.deleteFacility(facilityId);
+		return Response.status(Status.NO_CONTENT).build();
+	}
+	
 	private SportCentreResponse centreBuilder(SportsCentre centre, boolean extraData) {
 		SportCentreResponse response = new SportCentreResponse(address)
 				.id(centre.getId())
