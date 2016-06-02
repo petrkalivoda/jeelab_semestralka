@@ -3,6 +3,7 @@ package jeelab.model.builder;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
 import jeelab.model.dao.SportsCentreDao;
@@ -14,20 +15,20 @@ import jeelab.view.HoursForm;
 
 public class SportsCentreFacilityBuilder implements EntityBuilder<SportsCentreFacility> {
 	
-	@Inject
-	private SportsCentreDao sportsDao;
+	// !!! FIXME !!! next time don't create circular dependencies
+	private @Inject Instance<SportsCentreDao> sportsDao;
 	
 	private SportsCentre centre;
 	private FacilityType type;
 	private List<BusinessHours> hours;
 
 	public SportsCentreFacilityBuilder centre(Long id) {
-		centre = sportsDao.getCentre(id);
+		centre = sportsDao.get().getCentre(id);
 		return this;
 	}
 	
 	public SportsCentreFacilityBuilder type(Long id) {
-		type = sportsDao.getFacilityType(id);
+		type = sportsDao.get().getFacilityType(id);
 		return this;
 	}
 	

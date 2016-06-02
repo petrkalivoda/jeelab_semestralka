@@ -38,7 +38,7 @@ import jeelab.ws.response.SportCentreResponse;
  * @author Vaclav Dobes
  *
  */
-@Path("sport")
+@Path("/sport")
 @Produces(MediaType.APPLICATION_JSON)
 public class SportWs {
 	

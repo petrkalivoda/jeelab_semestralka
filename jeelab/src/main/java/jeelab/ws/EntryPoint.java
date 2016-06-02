@@ -13,7 +13,7 @@ import javax.ws.rs.core.Response;
 import jeelab.ws.response.AddressStorage;
 import jeelab.ws.response.Point;
 
-@Path("")
+@Path("/")
 @Produces(MediaType.APPLICATION_JSON)
 public class EntryPoint {
 
@@ -21,7 +21,7 @@ public class EntryPoint {
 	private AddressStorage address;
 	
 	@GET()
-	@Path("")
+	@Path("/")
 	public Response points() {
 		
 		List<Point> points = new ArrayList<Point>();
