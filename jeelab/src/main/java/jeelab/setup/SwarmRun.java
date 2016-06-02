@@ -32,7 +32,7 @@ public class SwarmRun {
                     
                 }).dataSource("JeelabDS", (ds) -> {
                     ds.driverName("h2");
-                    ds.connectionUrl("jdbc:h2:mem:jeelabSwarm;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE");
+                    ds.connectionUrl("jdbc:h2:file:~/jeelabSwarm;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;AUTO_SERVER=TRUE");
                     ds.jndiName("java:/JeelabDS");
                     ds.jta(Boolean.TRUE);
                     ds.userName("sa");
