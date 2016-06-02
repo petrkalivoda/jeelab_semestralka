@@ -3,8 +3,10 @@ package jeelab.ws;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
+import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -101,6 +103,21 @@ public class ReservationWs {
 			reservations.add(createReservation(r));
 		}
 		return Response.status(Status.OK).entity(new ListWrapper(reservations)).build();
+	}
+	
+	/**
+	 * Detail rezervace
+	 * @return
+	 */
+	@GET()
+	@Path("{id}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@PermitAll
+	public Response reservation(@PathParam("id") Long id) {
+		Reservation reservation = reservationDao.getReservation(id);
+		if (reservation == null)
+			throw new EntityNotFoundException();
+		return Response.status(Status.OK).entity(createReservation(reservation)).build();
 	}
 	
 	/**

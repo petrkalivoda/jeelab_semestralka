@@ -1,7 +1,7 @@
-route.controller("ReservationController", function($scope, addressStorage, rest, globalMessages) {
+route.controller("ReservationController", function($scope, addressStorage, rest, globalMessages, websockets) {
 	
 	$scope.reservation = {};
-
+		
 	var getReservations = function() {
 		addressStorage.get("reservation", function(address) {
 			rest.get(address, null, function(response) {
@@ -9,6 +9,17 @@ route.controller("ReservationController", function($scope, addressStorage, rest,
 			});
 		});
 	}
+	
+	websockets.listen(function(address) {
+		console.log("Received: " + address);
+		globalMessages.push("info", "Byla vytvořena nová rezervace");
+		rest.get(address, null, function(response) {
+			$scope.reservation.list.count += 1;
+			console.log(response.data);
+			console.log($scope.reservation.list.list);
+			$scope.reservation.list.list.push(response.data);
+		});
+	});		
 	
 	getReservations();
 	
