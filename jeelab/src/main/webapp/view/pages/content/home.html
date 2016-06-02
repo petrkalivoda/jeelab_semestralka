@@ -7,6 +7,7 @@
 	<thead>
 		<tr>
 			<th>Adresa</th>
+			<th>Kontakt</th>
 			<th>Sportoviště</th>
 			<th>Otevírací hodiny</th>
 			<th>Akce</th>
@@ -19,7 +20,12 @@
 	</tfoot>
 	<tbody>
 		<tr data-ng-repeat="f in facility.list.list">
-			<td>{{f.centre.id}}</td>
+			<td>
+				{{f.centre.street}}<br>
+				{{f.centre.city}} ({{f.centre.country}})<br>
+				{{f.centre.building}}<br>
+			</td>
+			<td>{{f.centre.phone}}</td>
 			<td>{{f.type.name}}</td>
 			<td>
 				<ul>
@@ -31,7 +37,7 @@
 			<td class="action-tab single">
 				<button data-ng-show="hasRole('ROLE_ADMIN')"
 					title="rezervovat" class="btn btn-success glyphicon glyphicon-ok" 
-					data-ng-click="facility.openFacilityTypeAddModal(f)"
+					data-ng-click="facility.openReservationModal(f)"
 					data-toggle="modal" data-target="{{facility.modalSelector}}"></button>
 			</td>
 		</tr>
@@ -54,6 +60,7 @@
 						<span class="close" data-dismiss="alert" aria-label="close">&times;</span>
 						<strong>{{reservation.error}}</strong>
 					</div>	
+					
 					<div class="row">
 						<ul>
 							<li>{{facility.selected.user}}</li>
@@ -82,6 +89,16 @@
 								<input class="form-control" type="text" name="close" data-ng-model="reservation.form.to">
 							</label>
 						</div>
+					</div>
+					
+					<div>
+						<h4>Obsazené termíny</h4>
+						<table class="table table-striped">
+							<tr data-ng-repeat="r in facility.reservations.list">
+								<td>{{r.date}}</td>
+								<td>{{r.from}} - {{r.to}}</td>
+							</tr>
+						</table>
 					</div>
 				</div>
 				<div class="modal-footer">

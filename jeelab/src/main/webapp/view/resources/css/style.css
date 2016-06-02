@@ -81,3 +81,15 @@ td.action-tab.two {
 .action-container {
 	text-align: right;
 }
+
+#loading {
+	position: absolute;
+	top: 53px;
+	right: 5px;
+	z-index: 5000;
+}
+
+#loading img {
+	width: 80px;
+	height: 80px;
+}

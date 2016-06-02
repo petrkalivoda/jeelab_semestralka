@@ -16,6 +16,7 @@ public class FacilityResponse {
 
 	private Long id;
 	private String url;
+	private String reservationsUrl;
 	private SportCentreResponse centre;
 	private FacilityTypeResponse type;
 	private List<HoursResponse> hours;
@@ -38,10 +39,20 @@ public class FacilityResponse {
 		return this;
 	}
 	
+	public FacilityResponse reservationsUrl(String url) {
+		this.reservationsUrl = url;
+		return this;
+	}
+	
 	public FacilityResponse centre(SportsCentre centre) {
 		this.centre = new SportCentreResponse()
 				.id(centre.getId())
-				.url(address.centre(centre.getId()));
+				.url(address.centre(centre.getId()))
+				.city(centre.getCity())
+				.street(centre.getStreet())
+				.country(centre.getCountry())
+				.building(centre.getBuildingNumber())
+				.phone(centre.getPhoneNumber());
 		return this;
 	}
 	
@@ -80,6 +91,13 @@ public class FacilityResponse {
 	public void setUrl(String url) {
 		this.url = url;
 	}
+	public String getReservationsUrl() {
+		return reservationsUrl;
+	}
+	public void setReservationsUrl(String reservationsUrl) {
+		this.reservationsUrl = reservationsUrl;
+	}
+
 	public SportCentreResponse getCentre() {
 		return centre;
 	}

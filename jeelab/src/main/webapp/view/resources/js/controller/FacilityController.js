@@ -20,12 +20,19 @@ route.controller("FacilityController", function($scope, $rootScope, addressStora
 		});
 	}
 	
+	var getFacilityReservation = function(address) {
+		rest.get(address, null, function(response) {
+			$scope.facility.reservations = response.data;
+		});
+	}
+	
 	getFacilities();
 	
 	/**
-	 * Zavola se pri otevreni modalniho okna za ucelem pridani typu
+	 * Zavola se pri otevreni modalniho okna za ucelem vytvoreni rezervace
 	 */
-	$scope.facility.openFacilityTypeAddModal = function(facility) {
+	$scope.facility.openReservationModal = function(facility) {
+		getFacilityReservation(facility.reservationsUrl);
 		errorRender.clear(angular.element($scope.facility.formSelector));
 		$scope.reservation.form = {
 			user: $rootScope.user.id,
