@@ -1,5 +1,11 @@
-var entryPoint = "http://localhost:8080/jeelab/rest";
-var wsEntryPoint = "ws://localhost:8080/jeelab/websockets/reservation";
+var url = window.location.href;
+var arr = url.split("/");
+var host = arr[0] + "//" + arr[2]
+var wsHost = host.replace("http://", "");
+wsHost = wsHost.replace("https://", "");
+
+var entryPoint = host + "/jeelab/rest";
+var wsEntryPoint = "ws://"  + wsHost +  "/jeelab/websockets/reservation";
 
 // seznam modulu
 var route = angular.module("route", ['ngRoute']);
