@@ -83,9 +83,9 @@ public class ReservationDao {
 	}
 	
 	public void save(Reservation reservation) throws ReservationUnavailableException {
-//		if(!isAvailable(reservation) || isOutOfHours(reservation)){
-//			throw new ReservationUnavailableException();
-//		}
+		if(!isAvailable(reservation) || isOutOfHours(reservation)){
+			throw new ReservationUnavailableException();
+		}
 		
 		manager.persist(reservation);
     	manager.flush();
