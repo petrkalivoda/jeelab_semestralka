@@ -2,7 +2,6 @@ package jeelab.model.dao;
 
 import java.util.List;
 
-import javax.ejb.DependsOn;
 import javax.ejb.Stateless;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
@@ -21,7 +20,6 @@ import jeelab.view.UserForm;
  *
  */
 @Stateless
-@DependsOn("RolesInitializer")
 public class UserDao {
 	
 	@Inject
