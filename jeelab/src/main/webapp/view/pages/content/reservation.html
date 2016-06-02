@@ -1,0 +1,39 @@
+<meta charset="UTF-8">
+
+<h3>Rezervace</h3>
+
+<table class = "table table-striped">
+
+	<thead>
+		<tr>
+			<th>#</th>
+			<th>Termín</th>
+			<th>Uživatel</th>
+			<th>Email</th>
+			<th>Sportoviště</th>
+			<th>Zařízení</th>
+			<th>Akce</th>
+		</tr>
+	</thead>
+	<tfoot>
+		<tr>
+			<td colspan="7">Celkem: {{reservation.list.count}}</td>
+		</tr>
+	</tfoot>
+	<tbody>
+		<tr data-ng-repeat="r in reservation.list.list">
+			<td class="id-tab">{{r.id}}</td>
+			<td>{{r.from}} - {{r.to}} {{r.date}}</td>
+			<td>{{r.user.firstname}} {{r.user.lastname}}</td>
+			<td>{{r.user.email}}</td>
+			<td>{{r.facility.centre.id}}</td>
+			<td>{{r.facility.type.name}}</td>
+			<td class="action-tab single">
+				<button data-ng-show="hasRole('ROLE_ADMIN')"
+					title="smazat" class="btn btn-danger glyphicon glyphicon-remove" 
+					data-ng-click="reservation.deleteReservation(r.url)"></button>
+			</td>
+		</tr>
+	</tbody>
+
+</table>

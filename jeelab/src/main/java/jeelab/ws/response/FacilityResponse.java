@@ -25,7 +25,9 @@ public class FacilityResponse {
 	public FacilityResponse(AddressStorage address) {
 		this.address = address;
 	}
-	
+
+	public FacilityResponse() {}
+		
 	public FacilityResponse id(Long id) {
 		this.id = id;
 		return this;

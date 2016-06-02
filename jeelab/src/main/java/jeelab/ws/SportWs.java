@@ -201,12 +201,27 @@ public class SportWs {
 		return Response.status(Status.OK).build();
 	}
 	
+	/**
+	 * Maze sportovni centrum
+	 * @param id
+	 * @return
+	 */
 	@DELETE()
 	@Path("centre/{id}")
 	@RolesAllowed("ROLE_ADMIN")
 	public Response deleteCentre(@PathParam("id") Long id) {
 		sportsDao.deleteCentre(id);
 		return Response.status(Status.NO_CONTENT).build();
+	}
+	
+	@GET()
+	@Path("centre/facility")
+	public Response getAllFacilities() {
+		List<FacilityResponse> facilities = new ArrayList<FacilityResponse>();
+		for (SportsCentreFacility f : sportsDao.getAllFacilites()) {
+			facilities.add(facilityBuilder(f, true));
+		}
+		return Response.status(Status.OK).entity(new ListWrapper(facilities)).build();
 	}
 	
 	/**
@@ -231,6 +246,13 @@ public class SportWs {
 		return Response.status(Status.CREATED).entity(facilityBuilder(facility, false)).build();
 	}
 	
+	/**
+	 * Upravi zarizeni
+	 * @param centreId
+	 * @param facilityId
+	 * @param form
+	 * @return
+	 */
 	@PUT()
 	@Path("centre/{centreId}/facility/{facilityId}")
 	@RolesAllowed("ROLE_ADMIN")

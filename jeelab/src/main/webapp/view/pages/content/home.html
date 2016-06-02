@@ -1,0 +1,94 @@
+<meta charset="UTF-8">
+
+<h3>Zařízení</h3>
+
+<table class = "table table-striped">
+
+	<thead>
+		<tr>
+			<th>Adresa</th>
+			<th>Sportoviště</th>
+			<th>Otevírací hodiny</th>
+			<th>Akce</th>
+		</tr>
+	</thead>
+	<tfoot>
+		<tr>
+			<td colspan="4">Celkem: {{facility.list.count}}</td>
+		</tr>
+	</tfoot>
+	<tbody>
+		<tr data-ng-repeat="f in facility.list.list">
+			<td>{{f.centre.id}}</td>
+			<td>{{f.type.name}}</td>
+			<td>
+				<ul>
+					<li data-ng-repeat="h in f.hours">
+						{{h.day | day}}: {{h.open}} - {{h.close}}
+					</li>
+				</ul>
+			</td>
+			<td class="action-tab single">
+				<button data-ng-show="hasRole('ROLE_ADMIN')"
+					title="rezervovat" class="btn btn-success glyphicon glyphicon-ok" 
+					data-ng-click="facility.openFacilityTypeAddModal(f)"
+					data-toggle="modal" data-target="{{facility.modalSelector}}"></button>
+			</td>
+		</tr>
+	</tbody>
+
+</table>
+
+
+<!-- Modal okno s formularem pro pridani a upravu typu -->
+<div id="{{facility.modalId}}" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Rezervace</h4>
+			</div>
+			<form id="facility-form">
+				<div class="modal-body">	
+					<div class="alert alert-warning" data-ng-show="reservation.error != null">
+						<span class="close" data-dismiss="alert" aria-label="close">&times;</span>
+						<strong>{{reservation.error}}</strong>
+					</div>	
+					<div class="row">
+						<ul>
+							<li>{{facility.selected.user}}</li>
+							<li>{{facility.selected.facility}}</li>
+						</ul>
+					</div>
+					<div class="row">
+						<div class="col-md-4">
+							<label class="form-group">
+								Datum
+								<input data-ng-click="facility.datePicker('date')"
+									placeholder="yyyy-MM-dd"
+									class="form-control" type="text" name="date" data-ng-model="reservation.form.date"
+									data-uib-datepicker-popup="yyyy-MM-dd" data-is-open="facility.datePicker.date">
+							</label>
+						</div>
+						<div class="col-md-4">
+							<label class="form-group">
+								Od
+								<input class="form-control" type="text" name="open" data-ng-model="reservation.form.from">
+							</label>
+						</div>
+						<div class="col-md-4">
+							<label class="form-group">
+								Do
+								<input class="form-control" type="text" name="close" data-ng-model="reservation.form.to">
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-info" data-ng-click="facility.closeFacilityModal()">zrušit</button>
+					<button class="btn btn-success" data-ng-click="facility.modal.submit()">{{facility.modal.btn}}</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

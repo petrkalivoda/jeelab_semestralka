@@ -122,6 +122,15 @@ public class AddressStorage {
 	}
 	
 	/**
+	 * Seznam zarizeni
+	 * @param id
+	 * @return
+	 */
+	public String facility() {
+		return host() + "/" + REST_PREFIX + "/sport/centre/facility/";
+	}
+	
+	/**
 	 * Detail typu + update a delete
 	 * @param id
 	 * @return

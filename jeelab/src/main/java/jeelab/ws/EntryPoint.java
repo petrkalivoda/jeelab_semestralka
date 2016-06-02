@@ -31,6 +31,7 @@ public class EntryPoint {
 		points.add(new Point("logout", address.logout()));
 		points.add(new Point("reservation", address.reservation()));
 		points.add(new Point("centre", address.centre()));
+		points.add(new Point("facility", address.facility()));
 		points.add(new Point("facilityType", address.facilityType()));
 		
 		return Response.ok(points).build();

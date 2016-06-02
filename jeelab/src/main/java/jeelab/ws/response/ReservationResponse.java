@@ -5,6 +5,9 @@ import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+import jeelab.model.entity.SportsCentreFacility;
+import jeelab.model.entity.User;
+
 @JsonInclude(Include.NON_NULL)
 public class ReservationResponse {
 
@@ -14,6 +17,15 @@ public class ReservationResponse {
 	private Float from;
 	private Float to;
 	private UserResponse user;
+	private FacilityResponse facility;
+	
+	private AddressStorage address;
+	
+	public ReservationResponse(AddressStorage address) {
+		this.address = address;
+	}
+	
+	public ReservationResponse() {}
 	
 	public ReservationResponse id(long id) {
 		this.id = id;
@@ -44,6 +56,25 @@ public class ReservationResponse {
 		user = new UserResponse()
 				.id(id)
 				.url(url);
+		return this;
+	}
+	
+	public ReservationResponse user(User user) {
+		this.user = new UserResponse()
+				.id(user.getId())
+				.url(address.user(user.getId()))
+				.firstname(user.getFirstname())
+				.lastname(user.getLastname())
+				.email(user.getEmail());
+		return this;
+	}
+	
+	public ReservationResponse facility(SportsCentreFacility facility) {
+		this.facility = new FacilityResponse(address)
+				.id(facility.getId())
+				.url(address.facility(facility.getSportsCentre().getId(), facility.getId()))
+				.type(facility.getFacilityType())
+				.centre(facility.getSportsCentre());
 		return this;
 	}
 
@@ -94,5 +125,13 @@ public class ReservationResponse {
 	public void setUser(UserResponse user) {
 		this.user = user;
 	}
-		
+
+	public FacilityResponse getFacility() {
+		return facility;
+	}
+
+	public void setFacility(FacilityResponse facility) {
+		this.facility = facility;
+	}
+			
 }

@@ -1,56 +1,46 @@
-route.controller("FacilityController", function($scope, addressStorage, rest, globalMessages, validation, errorRender) {
+route.controller("FacilityController", function($scope, $rootScope, addressStorage, rest, validation, errorRender, globalMessages) {
 	
 	$scope.facility = {
-		type: {
-			formSelector: "#facility-type-form",
-			form: {},
-			modalId: "type-modal-form",
-			modalSelector: "#type-modal-form",
-			modal: {}
-		}
-	};	
+		datePicker: {},
+		formSelector: "#facility-form",
+		modalId: "facility-modal-form",
+		modalSelector: "#facility-modal-form",
+		modal: {},
+	};
 	
-	/**
-	 * Vraci seznam typu zarizeni
-	 */
-	var getTypes = function() {
-		addressStorage.get("facilityType", function(address) {
+	$scope.reservation = {
+		form: {}
+	};
+	
+	var getFacilities = function() {
+		addressStorage.get("facility", function(address) {
 			rest.get(address, null, function(response) {
-//				console.log(response.data);	
-				$scope.facility.type.list = response.data;
+				$scope.facility.list = response.data;
 			});
 		});
 	}
-	getTypes();
+	
+	getFacilities();
 	
 	/**
 	 * Zavola se pri otevreni modalniho okna za ucelem pridani typu
 	 */
-	$scope.facility.openFacilityTypeAddModal = function() {
-		errorRender.clear(angular.element($scope.facility.type.formSelector));
-		$scope.facility.type.form = {};
-		$scope.facility.type.modal = {
+	$scope.facility.openFacilityTypeAddModal = function(facility) {
+		errorRender.clear(angular.element($scope.facility.formSelector));
+		$scope.reservation.form = {
+			user: $rootScope.user.id,
+			centreFacility: facility.id
+		};
+		$scope.facility.selected = {
+			user: $rootScope.user.firstname + " " + $rootScope.user.firstname + " (" + $rootScope.user.email + ")",
+			facility: facility.type.name
+		};
+		$scope.reservation.error = null;
+		$scope.facility.modal = {
 			btn: "Přidat",
 			submit: function() {
-				errorRender.clear(angular.element($scope.facility.type.formSelector));
-				$scope.facility.addType();
-			}
-		};
-	}
-	
-	/**
-	 * Zavola se pri otevreni modalniho okna za ucelem upraveni typu
-	 */
-	$scope.facility.openFacilityTypeUpdateModal = function(type) {
-		errorRender.clear(angular.element($scope.facility.type.formSelector));
-		$scope.facility.type.form = {
-			name: type.name
-		};
-		$scope.facility.type.modal = {
-			btn: "Upravit",
-			submit: function() {
-				errorRender.clear(angular.element($scope.facility.type.formSelector));
-				$scope.facility.updateType(type.url);
+				errorRender.clear(angular.element($scope.facility.formSelector));
+				$scope.facility.createReservation();
 			}
 		};
 	}
@@ -58,61 +48,48 @@ route.controller("FacilityController", function($scope, addressStorage, rest, gl
 	/**
 	 * Zavre modalni okno
 	 */
-	$scope.facility.type.closeFacilityTypeModal = function() {
-		angular.element($scope.facility.type.modalSelector).modal("hide");
+	$scope.facility.closeFacilityModal = function() {
+		angular.element($scope.facility.modalSelector).modal("hide");
 	}
-
+	
 	/**
-	 * Prida typ zarizeni
+	 * Vytvori registraci
 	 */
-	$scope.facility.addType = function() {
-		addressStorage.get("facilityType", function(address) {
-			$scope.facility.type.applyValidation(function() {
-				rest.post(address, $scope.facility.type.form, function(response) {
-					$scope.facility.type.closeFacilityTypeModal();
-					globalMessages.push("success", "Typ zařízení byl přidán");
-					getTypes();
+	$scope.facility.createReservation = function() {
+		$scope.facility.applyValidation(function() {
+//			console.log($scope.reservation.form);
+			addressStorage.get("reservation", function(address) {
+				rest.post(address, $scope.reservation.form, function(response) { // 2**
+					$scope.facility.closeFacilityModal();
+					globalMessages.push("success", "Rezervace byla vytvorena");
+				}, function(response) { // 3**, 4**, 5**
+					if (response.status == 409)
+						$scope.reservation.error = "Nelze rezervovat zadaný termín";
 				});
 			});
 		});
 	}
 	
 	/**
-	 * Upravi typ zarizeni
+	 * otevre date picker
 	 */
-	$scope.facility.updateType = function(address) {
-		$scope.facility.type.applyValidation(function() {
-			rest.put(address, $scope.facility.type.form, function(response) {
-				$scope.facility.type.closeFacilityTypeModal();
-				globalMessages.push("success", "Typ zařízení byl upraven");
-				getTypes();
-			});
-		});
-	}
-	
-	/**
-	 * Vola rest pro mazani typu, chyba 400 znamena, ze typ je prirazen k zarizeni anelze smazat.
-	 */
-	$scope.facility.deleteType = function(address) {
-		if (confirm("Opravdu smazat ?")) {
-			rest.delete(address, function(response) {
-				globalMessages.push("success", "Typ zařízení byl smazán");
-				getTypes();
-			});
-		}
+	$scope.facility.datePicker = function(name) {
+		$scope.facility.datePicker[name] = true;
 	}
 	
 	/**
 	 * Validace typu
 	 */
-	$scope.facility.type.applyValidation = function(valid, invalid) {
-		validation.input("name", $scope.facility.type.form.name).required().length(125);
+	$scope.facility.applyValidation = function(valid, invalid) {
+		validation.input("date", $scope.reservation.form.date).required();
+		validation.input("from", $scope.reservation.form.from).required();
+		validation.input("to", $scope.reservation.form.to).required();
 		
 		if (validation.isValid()) {
 			if (valid != null)
 				valid();
 		} else {
-			errorRender.showErrors(angular.element($scope.facility.type.formSelector), validation);
+			errorRender.showErrors(angular.element($scope.facility.formSelector), validation);
 			if (invalid != null)
 				invalid()
 		}

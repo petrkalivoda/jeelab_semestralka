@@ -69,6 +69,15 @@ td.action-tab {
 	width: 150px;
 	text-align: left;
 }
+
+td.action-tab.single {
+	width: 50px;
+}
+
+td.action-tab.two {
+	width: 100px;
+}
+
 .action-container {
 	text-align: right;
 }

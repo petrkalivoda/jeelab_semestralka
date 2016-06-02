@@ -55,6 +55,11 @@ public class SportsCentreDao {
     	return manager.find(SportsCentre.class, id);
     }
 	
+	/**
+	 * Vraci detail centra vcetne oteviracich hodin a seznamu zarizeni
+	 * @param id
+	 * @return
+	 */
 	public SportsCentre getCompleteCentre(long id) {
     	SportsCentre centre = manager.find(SportsCentre.class, id);
     	if (centre != null) {
@@ -76,6 +81,16 @@ public class SportsCentreDao {
 									SportsCentreFacility.class)
 				.setParameter("centreId", centreId)
 				.getResultList();
+	}
+	
+	// TODO filtry, kdyz bude cas...
+	public List<SportsCentreFacility> getAllFacilites(){
+		List<SportsCentreFacility> list = manager.createQuery("select scf from SportsCentreFacility scf", 
+				SportsCentreFacility.class).getResultList();
+		for (SportsCentreFacility f : list) {
+			f.getBusinessHours().size();
+		}
+		return list;
 	}
 
 	public SportsCentreFacility getFacility(long id) {

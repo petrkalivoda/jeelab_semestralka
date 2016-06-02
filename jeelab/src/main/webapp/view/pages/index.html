@@ -14,6 +14,8 @@
 					<a class="navbar-brand" href="#/">Domů</a>
 				</div>
 				<ul class="nav navbar-nav">
+					<li data-ng-show="hasRole('ROLE_ADMIN')"><a href="#reservation">Rezervace</a></li>
+					<li data-ng-show="hasRole('ROLE_ADMIN')"><a href="#centre">Sportoviště</a></li>
 					<li data-ng-show="hasRole('ROLE_ADMIN')"><a href="#facility/type">Typy zařízení</a></li>
 				</ul>
 				<ul data-ng-controller="AuthController" class="nav navbar-nav navbar-right">
@@ -71,8 +73,10 @@
 	
 	<script src = "view/resources/js/controller/RegistrationController.js"></script>
 	<script src = "view/resources/js/controller/AuthController.js"></script>
+	<script src = "view/resources/js/controller/FacilityTypeController.js"></script>
 	<script src = "view/resources/js/controller/FacilityController.js"></script>
 	<script src = "view/resources/js/controller/CentreController.js"></script>
+	<script src = "view/resources/js/controller/ReservationController.js"></script>
 	
 </body>
 </html>
