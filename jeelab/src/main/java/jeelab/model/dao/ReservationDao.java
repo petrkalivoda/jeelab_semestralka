@@ -1,5 +1,6 @@
 package jeelab.model.dao;
 
+import java.util.Calendar;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -7,8 +8,10 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TemporalType;
-
-import org.joda.time.DateTime;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import jeelab.exception.ReservationUnavailableException;
 import jeelab.model.builder.ReservationBuilder;
@@ -34,13 +37,12 @@ public class ReservationDao {
     private EntityManager manager;
 	
 	private boolean isAvailable(Reservation reservation){
-		// !!! FIXME !!! getSingleResult hází výjimku při nenalezení.
 		return ((Long) manager.createQuery("select count(reservation) from Reservation reservation "
-							+ "where reservation.sportsCentreFacility=:res "
-							+ "and reservation.date=:date "
-							+ "and reservation.startTime<:resStart " //interval check x1 < y2 && y1 < x2
-							+ "and reservation.end>:resEnd")
-		.setParameter("res", reservation)
+							+ "where reservation.sportsCentreFacility = :res "
+							+ "and reservation.date = :date "
+							+ "and reservation.from < :resEnd " 
+							+ "and reservation.to > :resStart")
+		.setParameter("res", reservation.getSportsCentreFacility())
 		.setParameter("date", reservation.getDate(), TemporalType.DATE)
 		.setParameter("resStart", reservation.getFrom())
 		.setParameter("resEnd", reservation.getTo())
@@ -49,14 +51,16 @@ public class ReservationDao {
 	}
 	
 	private boolean isOutOfHours(Reservation reservation){
-		DateTime dt = new DateTime(reservation.getDate().getTime());
-		BusinessHours hours = businessHoursDao.getFacilityHoursForDay(reservation.getSportsCentreFacility().getId(), dt.getDayOfWeek());
+		Calendar c = Calendar.getInstance();
+		c.setTime(reservation.getDate());
 		
+		BusinessHours hours = businessHoursDao.getFacilityHoursForDay(reservation.getSportsCentreFacility().getId(), c.get(Calendar.DAY_OF_WEEK));
+
 		if(hours == null){
-			return false;
+			return true;
 		}
 		
-		return hours.getOpenTime() <= reservation.getFrom() && hours.getCloseTime() >= reservation.getTo();
+		return !(hours.getOpenTime() <= reservation.getFrom() && hours.getCloseTime() >= reservation.getTo());
 	}
 	
 	public void save(Reservation reservation) throws ReservationUnavailableException {
@@ -70,6 +74,7 @@ public class ReservationDao {
 	
 	public void updateReservation(long id, ReservationForm form) throws ReservationUnavailableException {
 		Reservation reservation = manager.find(Reservation.class, id);
+		
 		if(reservation != null){
 			if(!isAvailable(reservation) || isOutOfHours(reservation)){
 				throw new ReservationUnavailableException();
@@ -106,15 +111,24 @@ public class ReservationDao {
 	 * @param userId
 	 * @return
 	 */
-    public List<Reservation> getReservations(Long max, Long offset) {
-        return manager
-                .createQuery("select reservation from Reservation reservation "
-                			+ "order by reservation.date "
-                			+ (max > 0 ? "limit :offset,:max" : ""), 
-                			Reservation.class)
-                .setParameter("offset", offset)
-                .setParameter("max", max)
-                .getResultList();
+    public List<Reservation> getReservations(Long max, Long offset) {    	
+    	CriteriaBuilder cb = manager.getCriteriaBuilder();
+    	
+    	CriteriaQuery<Reservation> cq = cb.createQuery(Reservation.class);
+    	Root<Reservation> root = cq.from(Reservation.class);
+    	cq.orderBy(cb.desc(root.get("date")));
+    	
+    	TypedQuery<Reservation> q = manager.createQuery(cq);
+    	
+    	if(max != null && !max.equals(0L)) {
+        	q.setMaxResults(max.intValue());
+        }
+        
+        if(offset != null && !offset.equals(0L)) {
+        	q.setFirstResult(offset.intValue());
+        }
+        
+        return q.getResultList();
     }
     
     /**
@@ -131,16 +145,25 @@ public class ReservationDao {
 	 * @return
 	 */
     public List<Reservation> getUserReservations(Long userId, Long max, Long offset) {
-    	/// !!!FIXME!!! use Optional<Long> or method overloading or something!
-        return manager
-                .createQuery("select reservation from Reservation reservation where reservation.user.id = :userId "
-                			+ "order by reservation.date "
-                			+ (max > 0 ? "limit :offset,:max" : ""), 
-                			Reservation.class)
-                .setParameter("userId", userId)
-                .setParameter("offset", offset)
-                .setParameter("max", max)
-                .getResultList();
+    	CriteriaBuilder cb = manager.getCriteriaBuilder();
+    	
+    	CriteriaQuery<Reservation> cq = cb.createQuery(Reservation.class);
+    	Root<Reservation> root = cq.from(Reservation.class);
+    	
+    	cq.orderBy(cb.desc(root.get("date")));
+    	cq.where(cb.equal(root.join("user").get("id"), userId));
+    	
+    	TypedQuery<Reservation> q = manager.createQuery(cq);
+    	
+    	if(max != null && !max.equals(0L)) {
+        	q.setMaxResults(max.intValue());
+        }
+        
+        if(offset != null && !offset.equals(0L)) {
+        	q.setFirstResult(offset.intValue());
+        }
+        
+        return q.getResultList();
     }
     
     /**
