@@ -32,7 +32,7 @@ public class SwarmRun {
                     
                 }).dataSource("JeelabDS", (ds) -> {
                     ds.driverName("h2");
-                    ds.connectionUrl("jdbc:h2:mem:jeelabSwarm;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE");
+                    ds.connectionUrl("jdbc:h2:file:~/jeelabSwarm;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=TRUE");
                     ds.jndiName("java:/JeelabDS");
                     ds.jta(Boolean.TRUE);
                     ds.userName("sa");
@@ -50,8 +50,8 @@ public class SwarmRun {
 		//5. create auth module options
 		Map<String, String> moduleOptions = new LinkedHashMap<>();
 		moduleOptions.put("dsJndiName", "java:/JeelabDS");
-		moduleOptions.put("principalsQuery", "SELECT password AS 'Password' FROM user_table WHERE email = ? AND active = 1");
-		moduleOptions.put("rolesQuery", "SELECT name, 'Roles' FROM user_table_role_table JOIN role_table ON (role_table.id = user_table_role_table.roles_id) JOIN user_table ON (user_table.id = user_table_role_table.User_id) WHERE email = ?");
+		moduleOptions.put("principalsQuery", "SELECT PASSWORD FROM USER_TABLE WHERE EMAIL = ? AND ACTIVE = 1");
+		moduleOptions.put("rolesQuery", "SELECT NAME, 'Roles' FROM USER_TABLE_ROLE_TABLE JOIN ROLE_TABLE ON (ROLE_TABLE.ID = USER_TABLE_ROLE_TABLE.ROLES_ID) JOIN USER_TABLE ON (USER_TABLE.ID = USER_TABLE_ROLE_TABLE.USER_ID) WHERE EMAIL = ?");
 		moduleOptions.put("hashAlgorithm", "SHA-256");
 		moduleOptions.put("hashEncoding", "hex");
         
