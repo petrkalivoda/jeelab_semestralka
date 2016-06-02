@@ -2,6 +2,7 @@
 <jboss-web>
 	<context-root>jeelab</context-root>
 	<security-domain>jeedb</security-domain>
+	<enable-websockets>true</enable-websockets>
 </jboss-web>
 
 <!-- xmlns="http://www.jboss.com/xml/ns/javaee" -->
