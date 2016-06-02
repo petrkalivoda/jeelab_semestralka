@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -38,7 +39,7 @@ import jeelab.ws.response.SportCentreResponse;
  * @author Vaclav Dobes
  *
  */
-@Path("sport")
+@Path("/sport")
 @Produces(MediaType.APPLICATION_JSON)
 public class SportWs {
 	
@@ -57,6 +58,7 @@ public class SportWs {
 	 */
 	@GET()
 	@Path("facility/type")
+	@Transactional
 	public Response facilityTypes () {
 		List<FacilityType> types = sportsDao.getFacilityTypes();
 		List <FacilityTypeResponse> list = new ArrayList<FacilityTypeResponse>();
@@ -94,6 +96,7 @@ public class SportWs {
 	@POST()
 	@Path("facility/type")
 	@RolesAllowed("ROLE_ADMIN")
+	@Transactional
 	public Response createFacilityType(@Valid FacilityTypeForm form) {
 		FacilityType type = new FacilityType();
 		type.setName(form.getName());
@@ -113,6 +116,7 @@ public class SportWs {
 	@PUT()
 	@Path("facility/type/{id}")
 	@RolesAllowed("ROLE_ADMIN")
+	@Transactional
 	public Response updateFacilityType(
 			@PathParam("id") Long id,
 			@Valid FacilityTypeForm form
@@ -129,6 +133,7 @@ public class SportWs {
 	@DELETE()
 	@Path("facility/type/{id}")
 	@RolesAllowed("ROLE_ADMIN")
+	@Transactional
 	public Response deleteFacilityType(@PathParam("id") Long id) {
 		sportsDao.deleteFacilityType(id);
 		return Response.status(Status.NO_CONTENT).build();
@@ -171,6 +176,7 @@ public class SportWs {
 	@POST()
 	@Path("centre")
 	@RolesAllowed("ROLE_ADMIN")
+	@Transactional
 	public Response createCentre(@Valid SportCentreForm form) {
 		SportsCentre centre = centreBuilder
 				.city(form.getCity())
@@ -193,6 +199,7 @@ public class SportWs {
 	@PUT()
 	@Path("centre/{id}")
 	@RolesAllowed("ROLE_ADMIN")
+	@Transactional
 	public Response updateCentre(
 			@PathParam("id") Long id,
 			@Valid SportCentreForm form
@@ -209,6 +216,7 @@ public class SportWs {
 	@DELETE()
 	@Path("centre/{id}")
 	@RolesAllowed("ROLE_ADMIN")
+	@Transactional
 	public Response deleteCentre(@PathParam("id") Long id) {
 		sportsDao.deleteCentre(id);
 		return Response.status(Status.NO_CONTENT).build();
@@ -237,6 +245,7 @@ public class SportWs {
 	@POST()
 	@Path("centre/{id}/facility")
 	@RolesAllowed("ROLE_ADMIN")
+	@Transactional
 	public Response createCentreFacility(
 			@PathParam("id") Long id, 
 			@Valid SportCentreFacilityForm form
@@ -260,6 +269,7 @@ public class SportWs {
 	@PUT()
 	@Path("centre/{centreId}/facility/{facilityId}")
 	@RolesAllowed("ROLE_ADMIN")
+	@Transactional
 	public Response updateCentreFacility(
 			@PathParam("centreId") Long centreId,
 			@PathParam("facilityId") Long facilityId,
@@ -278,6 +288,7 @@ public class SportWs {
 	@DELETE()
 	@Path("centre/{centreId}/facility/{facilityId}")
 	@RolesAllowed("ROLE_ADMIN")
+	@Transactional
 	public Response deleteCentreFacility(
 			@PathParam("centreId") Long centreId,
 			@PathParam("facilityId") Long facilityId

@@ -3,9 +3,13 @@ package jeelab.ws;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
+import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -55,6 +59,7 @@ public class ReservationWs {
 	@POST()
 	@Consumes(MediaType.APPLICATION_JSON)
 	@RolesAllowed("ROLE_USER")
+	@Transactional
 	public Response newReservation(@Valid ReservationForm form) throws ReservationUnavailableException {
 		Reservation reservation = reservationBuilder
 				.date(form.getDate())
@@ -83,6 +88,7 @@ public class ReservationWs {
 	@DELETE()
 	@Path("{id}")
 	@RolesAllowed("ROLE_ADMIN")
+	@Transactional
 	public Response deleteReservation(@PathParam("id") Long id) {
 		reservationDao.deleteReservation(id);
 		return Response.status(Status.NO_CONTENT).build();
@@ -101,6 +107,21 @@ public class ReservationWs {
 			reservations.add(createReservation(r));
 		}
 		return Response.status(Status.OK).entity(new ListWrapper(reservations)).build();
+	}
+	
+	/**
+	 * Detail rezervace
+	 * @return
+	 */
+	@GET()
+	@Path("{id}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@PermitAll
+	public Response reservation(@PathParam("id") Long id) {
+		Reservation reservation = reservationDao.getReservation(id);
+		if (reservation == null)
+			throw new EntityNotFoundException();
+		return Response.status(Status.OK).entity(createReservation(reservation)).build();
 	}
 	
 	/**

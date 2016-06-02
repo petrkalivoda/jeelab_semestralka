@@ -1,4 +1,4 @@
-route.controller("FacilityController", function($scope, $rootScope, addressStorage, rest, validation, errorRender, globalMessages) {
+route.controller("FacilityController", function($scope, $rootScope, addressStorage, rest, validation, errorRender, globalMessages, websockets) {
 	
 	$scope.facility = {
 		datePicker: {},
@@ -11,7 +11,7 @@ route.controller("FacilityController", function($scope, $rootScope, addressStora
 	$scope.reservation = {
 		form: {}
 	};
-	
+		
 	var getFacilities = function() {
 		addressStorage.get("facility", function(address) {
 			rest.get(address, null, function(response) {
@@ -67,6 +67,7 @@ route.controller("FacilityController", function($scope, $rootScope, addressStora
 //			console.log($scope.reservation.form);
 			addressStorage.get("reservation", function(address) {
 				rest.post(address, $scope.reservation.form, function(response) { // 2**
+					websockets.notify(response.data.url);
 					$scope.facility.closeFacilityModal();
 					globalMessages.push("success", "Rezervace byla vytvorena");
 				}, function(response) { // 3**, 4**, 5**

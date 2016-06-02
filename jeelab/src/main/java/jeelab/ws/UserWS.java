@@ -6,7 +6,7 @@ import java.util.List;
 
 import javax.annotation.security.PermitAll;
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -59,6 +59,7 @@ public class UserWS {
 	@POST()
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
+	@Transactional
 	public Response addUser(@Valid RegistrationForm form) throws UserUnavailableException {
 		User user = userBuilder
 				.firstname(form.getFirstname())

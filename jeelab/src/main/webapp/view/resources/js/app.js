@@ -1,4 +1,5 @@
 var entryPoint = "http://localhost:8080/jeelab/rest";
+var wsEntryPoint = "ws://localhost:8080/jeelab/websockets/reservation";
 
 // seznam modulu
 var route = angular.module("route", ['ngRoute']);
@@ -98,5 +99,9 @@ route.factory("rest", function($http, $rootScope, globalMessages) {
 
 route.factory("base64", function() {
 	return new Base64();
+});
+
+route.factory("websockets", function($timeout) {
+	return new WebSockets(wsEntryPoint, $timeout);
 });
 
