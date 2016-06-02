@@ -11,6 +11,7 @@ import org.wildfly.swarm.container.Container;
 import org.wildfly.swarm.datasources.DatasourcesFraction;
 import org.wildfly.swarm.jpa.JPAFraction;
 import org.wildfly.swarm.security.SecurityFraction;
+import org.wildfly.swarm.transactions.TransactionsFraction;
 
 /**
  * Main class for Swarm run
@@ -43,7 +44,10 @@ public class SwarmRun {
                 .inhibitDefaultDatasource()
                 .defaultDatasource("jboss/datasources/JeelabDS"));
 		
-		//4. create auth module options
+		//4. create transactions fraction
+		container.fraction(TransactionsFraction.createDefaultFraction());
+		
+		//5. create auth module options
 		Map<String, String> moduleOptions = new LinkedHashMap<>();
 		moduleOptions.put("dsJndiName", "java:/JeelabDS");
 		moduleOptions.put("principalsQuery", "SELECT password AS 'Password' FROM user_table WHERE email = ? AND active = 1");
@@ -51,7 +55,7 @@ public class SwarmRun {
 		moduleOptions.put("hashAlgorithm", "SHA-256");
 		moduleOptions.put("hashEncoding", "hex");
         
-		//5. create security fraction
+		//6. create security fraction
 		container.fraction(SecurityFraction.defaultSecurityFraction()
                 .securityDomain(new SecurityDomain<>("jeedb")
                     .classicAuthentication(new ClassicAuthentication<>()
@@ -59,10 +63,10 @@ public class SwarmRun {
                             .code("Database")
                             .flag(Flag.REQUIRED).moduleOptions(moduleOptions)))));
 		
-		//6. start container
+		//7. start container
 		container.start();
 		
-        //7. deploy app
+        //8. deploy app
 		container.deploy();
 	}
 }

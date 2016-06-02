@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -55,6 +56,7 @@ public class ReservationWs {
 	@POST()
 	@Consumes(MediaType.APPLICATION_JSON)
 	@RolesAllowed("ROLE_USER")
+	@Transactional
 	public Response newReservation(@Valid ReservationForm form) throws ReservationUnavailableException {
 		Reservation reservation = reservationBuilder
 				.date(form.getDate())
@@ -83,6 +85,7 @@ public class ReservationWs {
 	@DELETE()
 	@Path("{id}")
 	@RolesAllowed("ROLE_ADMIN")
+	@Transactional
 	public Response deleteReservation(@PathParam("id") Long id) {
 		reservationDao.deleteReservation(id);
 		return Response.status(Status.NO_CONTENT).build();
