@@ -34,7 +34,7 @@ public class SportsCentreFacility implements JpaEntity {
     @ManyToOne
     private FacilityType facilityType;
     
-    @OneToMany(targetEntity = Reservation.class)
+    @OneToMany(mappedBy = "sportsCentreFacility", targetEntity = Reservation.class)
     private Collection<Reservation> reservations;
 
     public Long getId() {

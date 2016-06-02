@@ -97,6 +97,12 @@ public class SportsCentreDao {
     	return manager.find(SportsCentreFacility.class, id);
     }
 	
+	public SportsCentreFacility getFacilityWithReservations(long id) {
+		SportsCentreFacility facility = manager.find(SportsCentreFacility.class, id);
+		facility.getReservations().size();
+		return facility;
+    }
+	
 	public void saveFacilityType(FacilityType type) {
 		manager.persist(type);
 		manager.flush();

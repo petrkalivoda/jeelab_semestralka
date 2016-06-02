@@ -75,6 +75,10 @@ public class AddressStorage {
 		return host() + "/" + REST_PREFIX + "/reservation/" + id;
 	}
 	
+	public String facilityReservations(long id) {
+		return host() + "/" + REST_PREFIX + "/reservation/facility/" + id;
+	}
+	
 	/**
 	 * Seznam sportovist (GET)
 	 * pridani sportoviste (POST)

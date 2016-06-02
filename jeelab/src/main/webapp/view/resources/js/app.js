@@ -92,8 +92,8 @@ route.factory("addressStorage", function($cookies, $http, globalMessages) {
 	return new AddressStorage(entryPoint, $cookies, $http, globalMessages);
 });
 
-route.factory("rest", function($http, globalMessages) {
-	return new Model($http, globalMessages);
+route.factory("rest", function($http, $rootScope, globalMessages) {
+	return new Model($http, $rootScope, globalMessages);
 });
 
 route.factory("base64", function() {

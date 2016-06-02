@@ -42,6 +42,10 @@
 		</nav>
 	</header>
 	
+	<div id="loading" data-ng-show="loading">
+		<img src="view/resources/imgs/spin.gif" alt="loading"/>
+	</div>
+	
 	<div id = "content">
 		<div data-ng-show="messages" class="messages-container">
 			<div data-hide-after-timeout="5000" class="alert alert-{{m.status}}" data-ng-repeat="m in messages" data-id="{{m.id}}">

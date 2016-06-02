@@ -20,7 +20,9 @@ import javax.ws.rs.core.Response.Status;
 import jeelab.exception.ReservationUnavailableException;
 import jeelab.model.builder.ReservationBuilder;
 import jeelab.model.dao.ReservationDao;
+import jeelab.model.dao.SportsCentreDao;
 import jeelab.model.entity.Reservation;
+import jeelab.model.entity.SportsCentreFacility;
 import jeelab.view.ReservationForm;
 import jeelab.ws.response.AddressStorage;
 import jeelab.ws.response.ListWrapper;
@@ -39,6 +41,8 @@ public class ReservationWs {
 	private ReservationBuilder reservationBuilder;
 	@Inject
 	private ReservationDao reservationDao;
+	@Inject
+	private SportsCentreDao sportsDao;
 	@Inject
 	private AddressStorage address;
 
@@ -99,6 +103,23 @@ public class ReservationWs {
 		return Response.status(Status.OK).entity(new ListWrapper(reservations)).build();
 	}
 	
+	/**
+	 * Seznam rezervaci konkretniho zarizeni
+	 * @return
+	 */
+	@GET()
+	@Path("facility/{id}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@RolesAllowed("ROLE_USER")
+	public Response reservationFacilityList(@PathParam("id") Long id) {
+		List<ReservationResponse> reservations = new ArrayList<ReservationResponse>();
+		SportsCentreFacility facility = sportsDao.getFacilityWithReservations(id);
+		for (Reservation r : facility.getReservations()) {
+			reservations.add(createBasicReservation(r));
+		}
+		return Response.status(Status.OK).entity(new ListWrapper(reservations)).build();
+	}
+	
 	private ReservationResponse createReservation(Reservation r) {
 		return new ReservationResponse(address)
 				.id(r.getId())
@@ -108,6 +129,15 @@ public class ReservationWs {
 				.date(r.getDate())
 				.user(r.getUser())
 				.facility(r.getSportsCentreFacility());
+	}
+	
+	private ReservationResponse createBasicReservation(Reservation r) {
+		return new ReservationResponse(address)
+				.id(r.getId())
+				.url(address.reservation(r.getId()))
+				.from(r.getFrom())
+				.to(r.getTo())
+				.date(r.getDate());
 	}
 	
 }

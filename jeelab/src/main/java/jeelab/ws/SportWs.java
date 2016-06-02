@@ -164,7 +164,7 @@ public class SportWs {
 	}
 	
 	/**
-	 * Nové sportovni centrum
+	 * NovÃ© sportovni centrum
 	 * @param form
 	 * @return
 	 */
@@ -214,6 +214,10 @@ public class SportWs {
 		return Response.status(Status.NO_CONTENT).build();
 	}
 	
+	/**
+	 * Seznam veskerych zarizeni
+	 * @return
+	 */
 	@GET()
 	@Path("centre/facility")
 	public Response getAllFacilities() {
@@ -303,6 +307,7 @@ public class SportWs {
 		FacilityResponse response = new FacilityResponse(address)
 				.id(facility.getId())
 				.url(address.facility(facility.getSportsCentre().getId(), facility.getFacilityType().getId()))
+				.reservationsUrl(address.facilityReservations(facility.getId()))
 				.type(facility.getFacilityType())
 				.hours(facility.getBusinessHours());
 		if (centre)
