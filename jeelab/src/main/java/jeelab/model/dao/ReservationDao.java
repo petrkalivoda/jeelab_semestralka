@@ -1,12 +1,14 @@
 package jeelab.model.dao;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -17,6 +19,7 @@ import jeelab.exception.ReservationUnavailableException;
 import jeelab.model.builder.ReservationBuilder;
 import jeelab.model.entity.BusinessHours;
 import jeelab.model.entity.Reservation;
+import jeelab.model.entity.SportsCentreFacility;
 import jeelab.view.ReservationForm;
 
 /**
@@ -37,30 +40,45 @@ public class ReservationDao {
     private EntityManager manager;
 	
 	private boolean isAvailable(Reservation reservation){
-		return ((Long) manager.createQuery("select count(reservation) from Reservation reservation "
-							+ "where reservation.sportsCentreFacility = :res "
-							+ "and reservation.date = :date "
-							+ "and reservation.from < :resEnd " 
-							+ "and reservation.to > :resStart")
-		.setParameter("res", reservation.getSportsCentreFacility())
-		.setParameter("date", reservation.getDate(), TemporalType.DATE)
-		.setParameter("resStart", reservation.getFrom())
-		.setParameter("resEnd", reservation.getTo())
-		.getSingleResult()
-		) == 0;
+		return isAvailable(reservation.getId(), reservation.getSportsCentreFacility(), reservation.getDate(), reservation.getFrom(), reservation.getTo());
+	}
+	
+	private boolean isAvailable(Long id, SportsCentreFacility facility , Date date, Float from, Float to){
+		Query query = manager.createQuery("select count(reservation) from Reservation reservation "
+				+ "where reservation.sportsCentreFacility = :facility "
+				+ (id != null ? "and reservation.id <> :resId " : "")
+				+ "and reservation.date = :date "
+				+ "and reservation.from < :resEnd " 
+				+ "and reservation.to > :resStart");
+		
+		if(id != null){
+			query.setParameter("resId", id);
+		}
+		
+		return ((Long) query
+				.setParameter("facility", facility)
+				.setParameter("date", date, TemporalType.DATE)
+				.setParameter("resStart", from)
+				.setParameter("resEnd", to)
+				.getSingleResult()
+				) == 0;
 	}
 	
 	private boolean isOutOfHours(Reservation reservation){
+		return isOutOfHours(reservation.getId(), reservation.getSportsCentreFacility(), reservation.getDate(), reservation.getFrom(), reservation.getTo());
+	}
+	
+	private boolean isOutOfHours(Long id, SportsCentreFacility facility , Date date, Float from, Float to){
 		Calendar c = Calendar.getInstance();
-		c.setTime(reservation.getDate());
+		c.setTime(date);
 		
-		BusinessHours hours = businessHoursDao.getFacilityHoursForDay(reservation.getSportsCentreFacility().getId(), c.get(Calendar.DAY_OF_WEEK));
+		BusinessHours hours = businessHoursDao.getFacilityHoursForDay(facility.getId(), c.get(Calendar.DAY_OF_WEEK));
 
 		if(hours == null){
 			return true;
 		}
 		
-		return !(hours.getOpenTime() <= reservation.getFrom() && hours.getCloseTime() >= reservation.getTo());
+		return !(hours.getOpenTime() <= from && hours.getCloseTime() >= to);
 	}
 	
 	public void save(Reservation reservation) throws ReservationUnavailableException {
@@ -76,7 +94,8 @@ public class ReservationDao {
 		Reservation reservation = manager.find(Reservation.class, id);
 		
 		if(reservation != null){
-			if(!isAvailable(reservation) || isOutOfHours(reservation)){
+			if(!isAvailable(reservation.getId(), reservation.getSportsCentreFacility(), form.getDate(), form.getFrom(), form.getTo()) 
+					|| isOutOfHours(reservation.getId(), reservation.getSportsCentreFacility(), form.getDate(), form.getFrom(), form.getTo())){
 				throw new ReservationUnavailableException();
 			}
 			
