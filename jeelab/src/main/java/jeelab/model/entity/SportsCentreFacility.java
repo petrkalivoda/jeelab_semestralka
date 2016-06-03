@@ -28,7 +28,7 @@ public class SportsCentreFacility implements JpaEntity {
     @ManyToOne
     private SportsCentre sportsCentre;
     
-    @ManyToMany(targetEntity = BusinessHours.class, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "sportsCentreFacility", cascade = CascadeType.PERSIST)
     private Collection<BusinessHours> businessHours;
     
     @ManyToOne
