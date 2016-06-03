@@ -13,6 +13,7 @@ import jeelab.model.builder.SportsCentreFacilityBuilder;
 import jeelab.model.entity.FacilityType;
 import jeelab.model.entity.SportsCentre;
 import jeelab.model.entity.SportsCentreFacility;
+import jeelab.service.GeocodingService;
 import jeelab.view.SportCentreFacilityForm;
 import jeelab.view.SportCentreForm;
 
@@ -23,11 +24,14 @@ public class SportsCentreDao {
 	private SportsCentreBuilder sportsBuilder;
 	@Inject
 	private SportsCentreFacilityBuilder facilityBuilder;
+	
+	private @Inject GeocodingService geocodingService;
 
 	@PersistenceContext(unitName = "jee")
     private EntityManager manager;
 	
 	public void saveCentre(SportsCentre centre) {
+		geocodingService.geocode(centre);
 		manager.persist(centre);
 		manager.flush();
 	}
@@ -43,6 +47,8 @@ public class SportsCentreDao {
 				.building(form.getBuildingNumber())
 				.hours(form.getHours())
 				.build(centre);
+		
+		geocodingService.geocode(centre);
 	}
 	
 	public void deleteCentre(long id) {

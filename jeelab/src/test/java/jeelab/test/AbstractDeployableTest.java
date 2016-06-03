@@ -21,7 +21,7 @@ abstract public class AbstractDeployableTest {
 	@Deployment
 	public static WebArchive createDeployment() {
 		File[] dependencies = Maven.resolver().loadPomFromFile("pom.xml").importRuntimeDependencies().resolve()
-				.withoutTransitivity().asFile();
+				.withTransitivity().asFile();
 
 		WebArchive war = ShrinkWrap.create(WebArchive.class, "jee-test.war").addPackages(true, "jeelab")
 				.addAsWebInfResource("beans.test.xml", "beans.xml")
