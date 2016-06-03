@@ -10,6 +10,14 @@ route.controller("ReservationController", function($scope, addressStorage, rest,
 		});
 	}
 	
+	var getReservations = function() {
+		addressStorage.get("my-reservation", function(address) {
+			rest.get(address, null, function(response) {
+				$scope.reservation.list = response.data;
+			});
+		});
+	}
+	
 	websockets.listen(function(address) {
 		console.log("Received: " + address);
 		globalMessages.push("info", "Byla vytvořena nová rezervace");

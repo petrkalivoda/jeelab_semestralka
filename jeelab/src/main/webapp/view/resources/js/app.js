@@ -37,6 +37,9 @@ route.config(["$routeProvider", function($routeProvider) {
 	}).when("/reservation", {
 		templateUrl: 'view/pages/content/reservation.html',
 		controller: 'ReservationController'
+	}).when("/my-reservation", {
+		templateUrl: 'view/pages/content/my-reservation.html',
+		controller: 'ReservationController'
 	}).otherwise({
 		templateUrl: 'view/pages/content/home.html',
 		controller: 'FacilityController'
