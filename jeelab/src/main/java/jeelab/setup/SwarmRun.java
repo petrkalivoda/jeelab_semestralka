@@ -10,6 +10,7 @@ import org.wildfly.swarm.config.security.security_domain.authentication.LoginMod
 import org.wildfly.swarm.container.Container;
 import org.wildfly.swarm.datasources.DatasourcesFraction;
 import org.wildfly.swarm.jpa.JPAFraction;
+import org.wildfly.swarm.messaging.MessagingFraction;
 import org.wildfly.swarm.security.SecurityFraction;
 import org.wildfly.swarm.transactions.TransactionsFraction;
 
@@ -62,6 +63,12 @@ public class SwarmRun {
                         .loginModule(new LoginModule<>("Database")
                             .code("Database")
                             .flag(Flag.REQUIRED).moduleOptions(moduleOptions)))));
+		
+		container.fraction(MessagingFraction.createDefaultFraction()
+                .defaultServer((s) -> {
+                    s.jmsTopic("my-topic");
+                    s.jmsQueue("exampleQueue");
+                }));
 		
 		//7. start container
 		container.start();

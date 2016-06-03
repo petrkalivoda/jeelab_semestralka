@@ -306,7 +306,9 @@ public class SportWs {
 				.city(centre.getCity())
 				.country(centre.getCountry())
 				.phone(centre.getPhoneNumber())
-				.building(centre.getBuildingNumber());
+				.building(centre.getBuildingNumber())
+				.longitude(centre.getLongitude())
+				.latitude(centre.getLatitude());
 		if (extraData) {
 			response.hours(centre.getBusinessHours());
 			response.facilities(centre.getFacilities());

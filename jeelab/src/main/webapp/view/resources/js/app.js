@@ -39,6 +39,7 @@ route.config(["$routeProvider", function($routeProvider) {
 		controller: 'ReservationController'
 	}).otherwise({
 		templateUrl: 'view/pages/content/home.html',
+		controller: 'FacilityController'
 	});
 	
 }]);
@@ -63,19 +64,19 @@ route.filter('day', function ($filter) {
 	return function (input) {
 		switch (input) {
 			case 1:
-				return "pondělí";
+				return "neděle";
 			case 2:
-				return "úterý";
+				return "pondělí";
 			case 3:
 				return "středa";
 			case 4:
-				return "čtvrtek";
+				return "úterý";
 			case 5:
-				return "pátek";
+				return "čtvrtek";
 			case 6:
-				return "sobota";
+				return "pátek";
 			case 7:
-				return "neděle";
+				return "sobota";
 			default:
 				return input;
 		}

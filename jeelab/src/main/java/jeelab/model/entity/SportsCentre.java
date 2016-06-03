@@ -39,6 +39,13 @@ public class SportsCentre implements JpaEntity {
     @Column(name = "phone_number")
     private String phoneNumber;
     
+    @Column(name = "gps_lng")
+    private Float longitude;
+    
+    @Column(name = "gps_lat")
+    private Float latitude;
+    
+    
     @OneToMany(mappedBy = "sportsCentre", cascade= CascadeType.ALL)
     private Collection<SportsCentreFacility> facilities;
     
@@ -108,4 +115,20 @@ public class SportsCentre implements JpaEntity {
     public void setBusinessHours(Collection<BusinessHours> businessHours) {
         this.businessHours = businessHours;
     }
+
+	public Float getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(Float longitude) {
+		this.longitude = longitude;
+	}
+
+	public Float getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(Float latitude) {
+		this.latitude = latitude;
+	}
 }

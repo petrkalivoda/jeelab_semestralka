@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.annotation.security.PermitAll;
 import javax.inject.Inject;
+import javax.jms.JMSException;
+import javax.naming.NamingException;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
@@ -19,6 +21,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import jeelab.exception.UserUnavailableException;
+import jeelab.messaging.MailProducer;
 import jeelab.model.builder.UserBuilder;
 import jeelab.model.dao.ReservationDao;
 import jeelab.model.dao.UserDao;
@@ -49,18 +52,22 @@ public class UserWS {
 	private AddressStorage address;
 	@Inject
 	private Principal loggedUser;
+	@Inject
+	private MailProducer mail;
 	
 	/**
 	 * Registruje noveho uzivatele s roli "ROLE_USER"
 	 * @param form
 	 * @return
 	 * @throws UserUnavailableException 
+	 * @throws JMSException 
+	 * @throws NamingException 
 	 */
 	@POST()
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Transactional
-	public Response addUser(@Valid RegistrationForm form) throws UserUnavailableException {
+	public Response addUser(@Valid RegistrationForm form) throws UserUnavailableException, NamingException, JMSException {
 		User user = userBuilder
 				.firstname(form.getFirstname())
 				.lastname(form.getLastname())
@@ -69,6 +76,7 @@ public class UserWS {
 				.setRole(RolesInitializer.ROLE_USER)
 				.build();
 		userDao.save(user);
+		mail.sendMail("test");
 		return Response.status(Status.CREATED).entity(userResponse(user)).build();
 	}
 	

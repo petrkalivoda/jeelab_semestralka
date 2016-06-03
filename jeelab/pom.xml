@@ -21,7 +21,7 @@
 			<artifactId>cors-filter</artifactId>
 			<version>2.5</version>
 		</dependency>
-	
+
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-annotations</artifactId>
@@ -81,18 +81,24 @@
 			<groupId>org.wildfly.swarm</groupId>
 			<artifactId>ejb</artifactId>
 		</dependency>
-
 		<dependency>
-			<groupId>javax</groupId>
-			<artifactId>javaee-api</artifactId>
-			<version>7.0</version>
-			<scope>provided</scope>
+		    <groupId>org.wildfly.swarm</groupId>
+		    <artifactId>messaging</artifactId>
 		</dependency>
-
+		<dependency>
+		    <groupId>org.wildfly.swarm</groupId>
+		    <artifactId>msc</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<version>1.4.192</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.maps</groupId>
+			<artifactId>google-maps-services</artifactId>
+			<version>0.1.9</version>
 		</dependency>
 
 	</dependencies>
