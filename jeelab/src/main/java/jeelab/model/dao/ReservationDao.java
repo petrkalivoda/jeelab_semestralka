@@ -4,7 +4,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import javax.ejb.DependsOn;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -62,7 +61,7 @@ public class ReservationDao {
 				.setParameter("resStart", from)
 				.setParameter("resEnd", to)
 				.getSingleResult()
-				) == 0;
+				).equals(0L);
 	}
 	
 	private boolean isOutOfHours(Reservation reservation){
@@ -82,7 +81,7 @@ public class ReservationDao {
 		return !(hours.getOpenTime() <= from && hours.getCloseTime() >= to);
 	}
 	
-	public void save(Reservation reservation) throws ReservationUnavailableException {
+	public void save(Reservation reservation) throws ReservationUnavailableException 
 		if(!isAvailable(reservation) || isOutOfHours(reservation)){
 			throw new ReservationUnavailableException();
 		}

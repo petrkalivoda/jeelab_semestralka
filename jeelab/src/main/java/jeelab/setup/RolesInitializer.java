@@ -56,7 +56,7 @@ public class RolesInitializer {
 
 			try {
 				User adminUser = userBuilder.firstname(DEFAULT_ADMIN_NAME).lastname(DEFAULT_ADMIN_SURNAME)
-						.email(DEFAULT_ADMIN_EMAIL).setRole(ROLE_ADMIN).password(password).build();
+						.email(DEFAULT_ADMIN_EMAIL).setRole(ROLE_ADMIN).setRole(ROLE_USER).password(password).build();
 				userDao.save(adminUser);
 				logger.info(String.format("Created initial admin with credentials %s:%s", DEFAULT_ADMIN_EMAIL, password));
 				
