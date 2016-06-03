@@ -76,7 +76,7 @@ public class UserWS {
 				.setRole(RolesInitializer.ROLE_USER)
 				.build();
 		userDao.save(user);
-		mail.sendMail("test");
+//		mail.sendMessage("test");
 		return Response.status(Status.CREATED).entity(userResponse(user)).build();
 	}
 	
