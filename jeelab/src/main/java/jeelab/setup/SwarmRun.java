@@ -64,16 +64,13 @@ public class SwarmRun {
                             .code("Database")
                             .flag(Flag.REQUIRED).moduleOptions(moduleOptions)))));
 		
-		container.fraction(MessagingFraction.createDefaultFraction()
-                .defaultServer((s) -> {
-                    s.jmsTopic("my-topic");
-                    s.jmsQueue("my-queue");
-                }));
+		//7. enable JMS fraction
+		container.fraction(MessagingFraction.createDefaultFraction().defaultServer());
 		
-		//7. start container
+		//8. start container
 		container.start();
 		
-        //8. deploy app
+		//9. deploy app
 		container.deploy();
 	}
 }
