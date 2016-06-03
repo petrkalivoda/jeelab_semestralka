@@ -1,21 +1,21 @@
 package jeelab.messaging;
 
 import javax.annotation.Resource;
-import javax.enterprise.context.RequestScoped;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.jms.JMSContext;
 import javax.jms.JMSException;
 import javax.jms.Queue;
 import javax.naming.NamingException;
 
-@RequestScoped
+@Stateless
 public class MailProducer {
+	
+	@Inject
+	JMSContext context;
 	
 	@Resource(mappedName = "java:jboss/jms/queue/exampleQueue")
     private Queue queueMail;
-	
-	@Inject
-	private JMSContext context;
 	
 	public void sendMail(String msg) throws NamingException, JMSException {
 		try {    

@@ -90,6 +90,18 @@
 		    <artifactId>msc</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>javaee-api</artifactId>
+			<version>7.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+		    <groupId>org.jboss.spec.javax.jms</groupId>
+		    <artifactId>jboss-jms-api_2.0_spec</artifactId>
+		    <version>1.0.0.Final</version>
+		</dependency>
+				
+		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<version>1.4.192</version>

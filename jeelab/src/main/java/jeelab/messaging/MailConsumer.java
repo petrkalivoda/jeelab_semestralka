@@ -10,9 +10,9 @@ import javax.jms.Queue;
 public class MailConsumer {
 	
 	@Inject
-	 private JMSContext context;
+	JMSContext context;
 	  
-	 @Resource(mappedName = "java:/jms/queue/exampleQueue")
+	@Resource(mappedName = "java:jboss/jms/queue/exampleQueue")
 	 Queue myQueue;
 	 
 	 public String startReceiver() {
