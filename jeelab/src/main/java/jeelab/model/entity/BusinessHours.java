@@ -1,11 +1,14 @@
 package jeelab.model.entity;
 
 import java.util.Collection;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
@@ -30,9 +33,20 @@ public class BusinessHours implements JpaEntity {
     @Column(name = "close_time")
     private float closeTime;
     
+    
+    @JoinTable(
+    		   name = "centre_hours", 
+    		   joinColumns = @JoinColumn(name = "hour_id"), 
+    		   inverseJoinColumns = @JoinColumn(name = "centre_id")
+    		 )
     @ManyToMany(targetEntity = SportsCentre.class)
     private Collection<SportsCentre> sportsCentres;
     
+    @JoinTable(
+ 		   name = "facility_hours", 
+ 		   joinColumns = @JoinColumn(name = "hour_id"), 
+ 		   inverseJoinColumns = @JoinColumn(name = "facility_id")
+ 		 )
     @ManyToMany(targetEntity = SportsCentreFacility.class)
     private Collection<SportsCentreFacility> sportsCentreFacilities;
 

@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -49,6 +51,11 @@ public class SportsCentre implements JpaEntity {
     @OneToMany(mappedBy = "sportsCentre", cascade= CascadeType.ALL)
     private Collection<SportsCentreFacility> facilities;
     
+    @JoinTable(
+ 		   name = "centre_hours", 
+ 		   joinColumns = @JoinColumn(name = "centre_id"), 
+ 		   inverseJoinColumns = @JoinColumn(name = "hour_id")
+ 		 )
     @ManyToMany(targetEntity = BusinessHours.class, cascade = CascadeType.PERSIST)
     private Collection<BusinessHours> businessHours;
 
