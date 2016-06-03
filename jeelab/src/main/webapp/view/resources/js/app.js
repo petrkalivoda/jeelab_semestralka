@@ -68,9 +68,9 @@ route.filter('day', function ($filter) {
 			case 2:
 				return "pondělí";
 			case 3:
-				return "středa";
-			case 4:
 				return "úterý";
+			case 4:
+				return "středa";
 			case 5:
 				return "čtvrtek";
 			case 6:
