@@ -24,13 +24,13 @@ route.controller("CentreController", function($scope, $location, $routeParams, a
 			         {value: "UK", name: "Velká británie"}
 			         ],
 			day: [
-			      {value: 1, name: "pondělí"},
-			      {value: 2, name: "úterý"},
-			      {value: 3, name: "středa"},
-			      {value: 4, name: "čtvrtek"},
-			      {value: 5, name: "pátek"},
-			      {value: 6, name: "sobota"},
-			      {value: 7, name: "neděle"},
+			      {value: 2, name: "pondělí"},
+			      {value: 3, name: "úterý"},
+			      {value: 4, name: "středa"},
+			      {value: 5, name: "čtvrtek"},
+			      {value: 6, name: "pátek"},
+			      {value: 7, name: "sobota"},
+			      {value: 1, name: "neděle"},
 			      ]
 		}
 	};
