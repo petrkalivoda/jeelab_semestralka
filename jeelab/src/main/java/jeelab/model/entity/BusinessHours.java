@@ -1,14 +1,12 @@
 package jeelab.model.entity;
 
 import java.util.Collection;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 
@@ -32,11 +30,11 @@ public class BusinessHours implements JpaEntity {
     @Column(name = "close_time")
     private float closeTime;
     
-    @ManyToOne
-    private SportsCentre sportsCentres;
+    @ManyToMany(targetEntity = SportsCentre.class)
+    private Collection<SportsCentre> sportsCentres;
     
-    @ManyToOne
-    private SportsCentreFacility sportsCentreFacility;
+    @ManyToMany(targetEntity = SportsCentreFacility.class)
+    private Collection<SportsCentreFacility> sportsCentreFacilities;
 
     public Long getId() {
         return id;
@@ -70,21 +68,19 @@ public class BusinessHours implements JpaEntity {
         this.closeTime = closeTime;
     }
 
-	public SportsCentre getSportsCentres() {
-		return sportsCentres;
-	}
+    public Collection<SportsCentre> getSportsCentres() {
+        return sportsCentres;
+    }
 
-	public void setSportsCentres(SportsCentre sportsCentres) {
-		this.sportsCentres = sportsCentres;
-	}
+    public void setSportsCentres(Collection<SportsCentre> sportsCentres) {
+        this.sportsCentres = sportsCentres;
+    }
 
-	public SportsCentreFacility getSportsCentreFacility() {
-		return sportsCentreFacility;
-	}
+    public Collection<SportsCentreFacility> getSportsCentreFacilities() {
+        return sportsCentreFacilities;
+    }
 
-	public void setSportsCentreFacility(SportsCentreFacility sportsCentreFacility) {
-		this.sportsCentreFacility = sportsCentreFacility;
-	}
-
-    
+    public void setSportsCentreFacilities(Collection<SportsCentreFacility> sportsCentreFacilities) {
+        this.sportsCentreFacilities = sportsCentreFacilities;
+    }
 }

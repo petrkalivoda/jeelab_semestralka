@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -45,10 +45,11 @@ public class SportsCentre implements JpaEntity {
     @Column(name = "gps_lat")
     private Float latitude;
     
+    
     @OneToMany(mappedBy = "sportsCentre", cascade= CascadeType.ALL)
     private Collection<SportsCentreFacility> facilities;
     
-    @OneToMany(mappedBy = "sportsCentre", cascade = CascadeType.PERSIST)
+    @ManyToMany(targetEntity = BusinessHours.class, cascade = CascadeType.PERSIST)
     private Collection<BusinessHours> businessHours;
 
     public Long getId() {
