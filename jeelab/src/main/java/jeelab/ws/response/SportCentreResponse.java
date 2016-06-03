@@ -24,6 +24,8 @@ public class SportCentreResponse {
 	private String building;
 	private List<FacilityResponse> facilities;
 	private List<HoursResponse> hours;
+	private Float longitude;
+	private Float latitude;
 	
 	@JsonIgnore
 	private AddressStorage address;
@@ -71,6 +73,16 @@ public class SportCentreResponse {
 	
 	public SportCentreResponse building(String building) {
 		this.building = building;
+		return this;
+	}
+	
+	public SportCentreResponse longitude(Float longitude) {
+		this.longitude = longitude;
+		return this;
+	}
+	
+	public SportCentreResponse latitude(Float latitude) {
+		this.latitude = latitude;
 		return this;
 	}
 	
@@ -165,5 +177,20 @@ public class SportCentreResponse {
 	public void setFacilities(List<FacilityResponse> facilities) {
 		this.facilities = facilities;
 	}
-		
+
+	public Float getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(Float longitude) {
+		this.longitude = longitude;
+	}
+
+	public Float getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(Float latitude) {
+		this.latitude = latitude;
+	}		
 }
