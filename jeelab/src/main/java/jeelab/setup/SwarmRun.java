@@ -67,7 +67,7 @@ public class SwarmRun {
 		container.fraction(MessagingFraction.createDefaultFraction()
                 .defaultServer((s) -> {
                     s.jmsTopic("my-topic");
-                    s.jmsQueue("java:jboss/jms/queue/exampleQueue");
+                    s.jmsQueue("exampleQueue");
                 }));
 		
 		//7. start container

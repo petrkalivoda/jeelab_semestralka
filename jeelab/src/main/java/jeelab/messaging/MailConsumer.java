@@ -12,7 +12,7 @@ public class MailConsumer {
 	@Inject
 	 private JMSContext context;
 	  
-	 @Resource(mappedName = "java:jboss/jms/queue/exampleQueue")
+	 @Resource(mappedName = "java:/jms/queue/exampleQueue")
 	 Queue myQueue;
 	 
 	 public String startReceiver() {
