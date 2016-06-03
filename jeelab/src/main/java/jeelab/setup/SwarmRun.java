@@ -3,7 +3,6 @@ package jeelab.setup;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.wildfly.swarm.config.security.Flag;
 import org.wildfly.swarm.config.security.SecurityDomain;
 import org.wildfly.swarm.config.security.security_domain.ClassicAuthentication;
@@ -12,12 +11,8 @@ import org.wildfly.swarm.container.Container;
 import org.wildfly.swarm.datasources.DatasourcesFraction;
 import org.wildfly.swarm.jpa.JPAFraction;
 import org.wildfly.swarm.messaging.MessagingFraction;
-import org.wildfly.swarm.msc.ServiceActivatorArchive;
 import org.wildfly.swarm.security.SecurityFraction;
-import org.wildfly.swarm.spi.api.JARArchive;
 import org.wildfly.swarm.transactions.TransactionsFraction;
-
-import jeelab.messaging.EmailServiceActivator;
 
 /**
  * Main class for Swarm run
@@ -80,10 +75,5 @@ public class SwarmRun {
 		
         //8. deploy app
 		container.deploy();
-		
-		JARArchive deployment = ShrinkWrap.create(JARArchive.class);
-        deployment.as(ServiceActivatorArchive.class).addServiceActivator(EmailServiceActivator.class);
-        
-        container.deploy(deployment);
 	}
 }
